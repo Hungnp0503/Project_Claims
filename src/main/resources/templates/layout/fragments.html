@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+
+
+</head>
+<body>
+<div th:fragment="header">
+    <header class="col-md-12 header bg-dark border-bottom">
+        <div class="container-fluid  text-white">
+            <div class="row justify-content-between align-items-center">
+                <h1>Fpt software</h1>
+                <div id="user" class="user p-2">
+                    <i class="fa-solid fa-user fa-2x"></i><span class="caret"></span>
+                    <ul class="user-list">
+                        <li id="userprofile"><i class="fa-solid fa-user"></i><a href="#">Information</a> </li>
+                        <li id="logout"><a href="#"><i class="fa-solid fa-right-from-bracket"></i> Log out</a></li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </header>
+</div>
+
+
+<div th:fragment="menu" class="col-md-3 bg-secondary min-vh-100">
+    <nav class="navbar">
+        <ul class="navbar-nav ">
+
+            <li class="nav-item ">
+                <a class="nav-link text-white h3" href="#">My claims</a>
+            </li>
+
+            <li class="nav-item">
+                <a class="nav-link text-white h3" href="#">Project Information</a>
+            </li>
+
+            <li class="nav-item">
+                <a class="nav-link text-white h3" href="#">Staff Information</a>
+            </li>
+
+            <li class="nav-item">
+                <a class="nav-link text-white h3" href="#">Claims request</a>
+            </li>
+
+        </ul>
+    </nav>
+</div>
+
+
+<div th:fragment="footer">
+    <footer class=" col-md-12 bg-dark text-white py-4 footer">
+        <div class="container">
+            <div class="row">
+                <!-- Company Information -->
+                <div class="col-md-6 ">
+                    <h5>About Us</h5>
+                    <p>We are committed to providing top-notch support for your claims requests. Our team is here to help you every step of the way.</p>
+                </div>
+                <div class="col-md-6">
+                    <h5>Contact Us</h5>
+                    <p><i class="fas fa-map-marker-alt"></i> 123 Claims Avenue, Suite 456, City, Country</p>
+                    <p><i class="fas fa-phone"></i> +1 (800) 123-4567</p>
+                    <p><i class="fas fa-envelope"></i> nguyenhunghkt959@gmail.com</p>
+                </div>
+            </div>
+            <div class="row mt-3">
+                <div class="col text-center">
+                    <p class="mb-0">&copy; 2024 Claims Request. All rights reserved.</p>
+                </div>
+            </div>
+        </div>
+    </footer>
+</div>
+
+</body>
+</html>
