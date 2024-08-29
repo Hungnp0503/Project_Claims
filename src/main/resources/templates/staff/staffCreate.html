@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.w3.org/1999/xhtml"
+      th:replace="~{layout/template::areas(~{::title},~{::main})}">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+    <main class="col-md-9">
+        <h2>Create new staff</h2>
+        <form th:action="@{/staff/create}" method="post" th:object="${staff}">
+            <input type="hidden" name="id" th:field="*{id}">
+            <div class="form-group">
+                <label for="email">Staff Name :</label>
+                <input type="text" class="form-control" id="email" placeholder="Enter title" name="staffName" th:field="${staff.staffName}">
+            </div>
+            <div class="form-group">
+                <label for="pwd">Email:</label>
+                <input type="file" class="form-control" id="pwd" name="email" th:field="*{email}">
+            </div>
+            <div class="form-group">
+                <label for="pwd">PassWord:</label>
+                <input type="file" class="form-control" id="pwd" name="password" th:field="*{password}">
+            </div>
+            <div class="form-group">
+                <label for="pwd">Department:</label>
+                <input type="file" class="form-control" id="pwd" name="department" th:field="*{department}">
+            </div>
+            <div class="form-group">
+                <label for="pwd">Job Rank:</label>
+                <input type="file" class="form-control" id="pwd" name="jobRank" th:field="*{jobRank}">
+            </div>
+            <div class="form-group">
+                <label for="pwd">Job Rank:</label>
+                <input type="file" class="form-control" id="pwd" name="salary" th:field="*{salary}">
+            </div>
+            <button type="submit" class="btn btn-primary">create</button>
+        </form>
+    </main>
+</body>
+</html>

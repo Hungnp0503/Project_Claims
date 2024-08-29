@@ -48,10 +48,11 @@ public class StaffController {
         for (int i = 1; i <= totalPages; i++) {
             pageNumber1.add(i);
         }
-
-
         model.addAttribute ("pageNumber", pageNumber1);
         model.addAttribute("page", page);
         return "staff/staffList";
     }
+
+
+
 }
