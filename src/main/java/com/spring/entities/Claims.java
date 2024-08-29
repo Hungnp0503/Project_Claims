@@ -19,6 +19,7 @@ public class Claims {
     @Temporal(TemporalType.DATE)
     private LocalDate date;
 
+
     private String day;
 
     @Temporal(TemporalType.TIME)
@@ -29,6 +30,9 @@ public class Claims {
 
     private Double totalOfHours;
 
+    private Status status;
+
+    private String description;
     @ManyToOne
     @JoinColumn(name = "staff_id")
     private Staff staff;
