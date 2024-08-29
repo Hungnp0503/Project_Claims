@@ -3,6 +3,7 @@ package com.spring.entities;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
+import org.springframework.format.annotation.DateTimeFormat;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
@@ -23,10 +24,16 @@ public class Project {
     private String projectCode;
 
     @Column(nullable = false)
+    @DateTimeFormat(pattern = "dd-MM-yyyy")
     private LocalDate fromDate;
 
     @Column(nullable = false)
+    @DateTimeFormat(pattern = "dd-MM-yyyy")
     private LocalDate toDate;
+
+    private String staffId;
+    private String position;
+    private String staffName;
 
     @OneToMany(mappedBy = "project")
     private List<ProjectDetail> projectDetails = new ArrayList<>();
