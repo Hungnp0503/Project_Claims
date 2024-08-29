@@ -29,13 +29,15 @@ public class Claims {
 
     private Double totalOfHours;
 
-    @ManyToOne
-    @JoinColumn(name = "staff_id")
-    private Staff staff;
+    private Double totals;
 
-    @ManyToOne
-    @JoinColumn(name = "project_id")
-    private Project project;
+//    @ManyToOne
+//    @JoinColumn(name = "staff_id")
+//    private Staff staff;
+//
+//    @ManyToOne
+//    @JoinColumn(name = "project_id")
+//    private Project project;
 
 
 }
