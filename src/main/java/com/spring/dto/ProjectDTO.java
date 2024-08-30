@@ -2,31 +2,22 @@ package com.spring.dto;
 
 
 
-import lombok.Getter;
-import lombok.Setter;
-import lombok.ToString;
+import lombok.*;
 
 import java.time.LocalDate;
 
 @Getter
 @Setter
 @ToString
+@AllArgsConstructor
+@NoArgsConstructor
 public class ProjectDTO {
 
-    private Integer id;
+    private Integer projectId;
+    private Integer staffId;
+    private String position;
+    private String staffName;
 
-    private String projectName;
 
-    private String projectCode;
-
-    private LocalDate fromDate;
-
-    private LocalDate toDate;
-
-    private String[] staffIdDTO;
-
-    private String[] positionDTO;
-
-    private String[] staffNameDTO;
 
 }
