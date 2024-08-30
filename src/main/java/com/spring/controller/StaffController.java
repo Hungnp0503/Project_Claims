@@ -9,9 +9,9 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.validation.BindingResult;
+import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -52,7 +52,45 @@ public class StaffController {
         model.addAttribute("page", page);
         return "staff/staffList";
     }
+    @GetMapping("/staff/create")
+    public String createStaff(Model model){
+        model.addAttribute("staff", new Staff());
+        return "staff/staffCreate";
+    }
+    @PostMapping("/staff/create")
+    public String saveStaff(
+            @ModelAttribute("staff") Staff staff,
+            BindingResult bindingResult,
+            RedirectAttributes attributes){
 
+        if(bindingResult.hasErrors()){
+            return "staff/create";
+        }
+        staffRepository.save(staff);
+        attributes.addFlashAttribute("message", "Changes about staff have been updated");
+        return "redirect:/staff/list";
+    }
+    @GetMapping("/staff/edit")
+    public String editStaff(
+            @RequestParam("id") Integer id,
+            Model model){
+        Staff staff = staffRepository.findById(id).orElse(null);
+        if(staff == null){
+            return "redirect:/staff/list";
+        }
+        model.addAttribute("staff", staff);
+        return "staff/staffEdit";
+    }
 
-
+    @GetMapping("/staff/delete")
+    public String deleteStaff(
+            @RequestParam("id") Integer id,
+            RedirectAttributes attributes){
+        Staff staff = staffRepository.findById(id).orElse(null);
+        if(staff!= null){
+            staffRepository.delete(staff);
+            attributes.addFlashAttribute("message", "Staff deleted successfully!");
+        }
+        return "redirect:/staff/list";
+    }
 }

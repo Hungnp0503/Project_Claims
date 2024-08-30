@@ -35,7 +35,7 @@
                 <td th:text="${staff.jobRank}"></td>
                 <td th:text="${staff.department}"></td>
                 <td>
-                    <a  th:href="@{/staff/delete/{id}(id=${staff.id})}" class="btn btn-danger">delete</a>
+                    <a  th:href="@{/staff/delete(id=${staff.id})}" class="btn btn-danger">delete</a>
                     <a  th:href="@{/staff/edit(id=${staff.id})}" class="btn btn-primary">edit</a>
                 </td>
             </tr>
