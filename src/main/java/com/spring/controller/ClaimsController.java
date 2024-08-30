@@ -1,10 +1,7 @@
 package com.spring.controller;
 
 
-import com.spring.entities.Claims;
-import com.spring.entities.Project;
-import com.spring.entities.ProjectDetail;
-import com.spring.entities.Staff;
+import com.spring.entities.*;
 import com.spring.reponsitory.ClaimsRepository;
 import com.spring.reponsitory.ProjectDetailReponsitory;
 import com.spring.reponsitory.ProjectReponsitory;
@@ -68,6 +65,7 @@ public class ClaimsController {
         Staff staff = (Staff) session.getAttribute("staffSesion");
         claims.setStaff(staff);
         claims.setProject(projectReponsitory.findById(projectid).get());
+        claims.setStatus(Status.Draft);
         claimsRepository.save(claims);
         return "redirect:/claims";
 
