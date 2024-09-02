@@ -47,3 +47,6 @@ li:hover {
     color:white;
 }
 
+.error {
+    color: red;
+}

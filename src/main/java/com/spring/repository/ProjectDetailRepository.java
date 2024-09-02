@@ -11,7 +11,5 @@ import java.util.List;
 public interface ProjectDetailRepository extends JpaRepository<ProjectDetail, ProjectDetailKey> {
 
     List<ProjectDetail> findByProjectId(Integer projectId);
-    @Query("DELETE FROM ProjectDetail p WHERE p.projectDetailKey.projectId = :id")
-    List<ProjectDetail> deleteId(@Param("id") Integer projectId);
 
 }

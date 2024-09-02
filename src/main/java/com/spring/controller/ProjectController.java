@@ -10,9 +10,12 @@ import com.spring.repository.ProjectDetailCustomImpl;
 import com.spring.sevices.ProjectDetailService;
 import com.spring.sevices.ProjectService;
 import com.spring.sevices.StaffService;
+import com.spring.validation.CreateGroup;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -31,8 +34,8 @@ public class ProjectController {
     private final ProjectDetailCustom projectDetailCustom;
 
     @ModelAttribute("staffList")
-    public List<Staff> populateStaffList() {
-        return staffService.readAll();
+    public List<ProjectDTO> populateStaffList() {
+        return projectDetailCustom.getStaffNull();
     }
     @Autowired
     public ProjectController(StaffService staffService, ProjectService projectService, ProjectDetailService projectDetailService, ProjectDetailCustom projectDetailCustom) {
@@ -61,15 +64,42 @@ public class ProjectController {
     }
 
     @PostMapping("/project/save")
-    public String saveProject(@ModelAttribute("project") Project project,
-                              @RequestParam("staffId") String staffId,
-                              @RequestParam("position") String role,
-                              RedirectAttributes attributes) {
+    public String saveProject(
+            @Validated(CreateGroup.class)
+            @ModelAttribute("project")
+            Project project,
+            BindingResult bindingResult,
+            @RequestParam("staffId") String staffId,
+            @RequestParam("position") String role,
+            RedirectAttributes attributes) {
+        if (bindingResult.hasErrors()) {
+            return "/project/create-project";
+        }
         projectService.save(project);
         Integer id = project.getId();
         projectDetailCustom.delete(id);
         String[] staffIdArray = staffId.split(",");
         String[] positionArray = role.split(",");
+        int count=0;
+        for(String i : positionArray){
+            if (i.equals("PM")) {
+                count++;
+            }
+            if(count >=2){
+                attributes.addFlashAttribute("message","A project has only 1 PM");
+                return "redirect:/project/create";
+            }
+        }
+        count=0;
+        for(String i : positionArray){
+            if (i.equals("QA")) {
+                count++;
+            }
+            if(count >=2){
+                attributes.addFlashAttribute("message","A project has only 1 QA");
+                return "redirect:/project/create";
+            }
+        }
         System.out.println(staffIdArray.length + " members added and");
         System.out.println(positionArray.length + " members added and");
         List<ProjectDetail> projectDetailList = new ArrayList<>();

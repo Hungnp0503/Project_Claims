@@ -1,6 +1,7 @@
 package com.spring.repository;
 
 import com.spring.dto.ProjectDTO;
+import com.spring.entities.Staff;
 import jakarta.persistence.EntityManager;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
@@ -46,6 +47,35 @@ public class ProjectDetailCustomImpl implements ProjectDetailCustom{
             projectDTOList.add(dto);
         }
 
+        return projectDTOList;
+    }
+
+    @Override
+    @Transactional
+    public List<ProjectDTO> getStaffNull() {
+        List<Object[]> result = null;
+        StringBuffer sql = new StringBuffer();
+        sql.append("SELECT ");
+        sql.append("  project_id,");
+        sql.append("  s.id,");
+        sql.append(" roleProject,");
+        sql.append(" staffName");
+        sql.append(" FROM ProjectDetail p");
+        sql.append(" RIGHT JOIN Staff s ON s.id = p.staff_id");
+        sql.append(" WHERE project_id IS NULL");
+
+        result = manager.createNativeQuery(sql.toString()).getResultList();
+        List<ProjectDTO> projectDTOList = new ArrayList<>();
+        for (Object[] res : result) {
+            // Assuming the order in the result array matches the order in the query
+            ProjectDTO dto = new ProjectDTO();
+            dto.setProjectId((Integer) res[0]);
+            dto.setStaffId((Integer) res[1]);
+            dto.setPosition((String) res[2]);
+            dto.setStaffName((String) res[3]);
+
+            projectDTOList.add(dto);
+        }
         return projectDTOList;
     }
 
