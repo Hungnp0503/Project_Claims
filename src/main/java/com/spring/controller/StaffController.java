@@ -2,6 +2,9 @@ package com.spring.controller;
 
 import com.spring.entities.Staff;
 import com.spring.repository.StaffRepository;
+import com.spring.validation.CreateGroup;
+import com.spring.validation.UpdateGroup;
+import org.hibernate.sql.Update;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -10,6 +13,7 @@ import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
@@ -59,12 +63,12 @@ public class StaffController {
     }
     @PostMapping("/staff/create")
     public String saveStaff(
-            @ModelAttribute("staff") Staff staff,
+            @Validated(value = {CreateGroup.class, UpdateGroup.class}) @ModelAttribute("staff") Staff staff,
             BindingResult bindingResult,
             RedirectAttributes attributes){
 
         if(bindingResult.hasErrors()){
-            return "staff/create";
+            return "staff/staffCreate";
         }
         staffRepository.save(staff);
         attributes.addFlashAttribute("message", "Changes about staff have been updated");
@@ -79,7 +83,7 @@ public class StaffController {
             return "redirect:/staff/list";
         }
         model.addAttribute("staff", staff);
-        return "staff/staffEdit";
+        return "staff/staffCreate";
     }
 
     @GetMapping("/staff/delete")

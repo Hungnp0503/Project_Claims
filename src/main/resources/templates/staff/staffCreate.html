@@ -8,33 +8,43 @@
 </head>
 <body>
     <main class="col-md-9">
-        <h2>Create new staff</h2>
+        <h2>Staff infomation</h2>
         <form th:action="@{/staff/create}" method="post" th:object="${staff}">
+            <input type="hidden" name="id" th:field="*{id}">
             <div class="form-group">
                 <label for="staffName">Staff Name :</label>
-                <input type="text" class="form-control" id="staffName" placeholder="Enter title" name="staffName" th:field="${staff.staffName}">
+                <input type="text" class="form-control" id="staffName" placeholder="Enter staff name" name="staffName" th:field="${staff.staffName}">
+                <span class="text-danger" th:if="${#fields.hasErrors('staffName')}" th:errorclass="error" th:errors="*{staffName}"></span>
             </div>
             <div class="form-group">
                 <label for="email">Email:</label>
                 <input type="email" class="form-control" id="email" name="email" th:field="*{email}">
+                <span class="text-danger" th:if="${#fields.hasErrors('email')}" th:errorclass="error" th:errors="*{email}"></span>
             </div>
             <div class="form-group">
                 <label for="password">PassWord:</label>
                 <input type="text" class="form-control" id="password" name="password" th:field="*{password}">
+                <span class="text-danger" th:if="${#fields.hasErrors('password')}" th:errorclass="error" th:errors="*{password}"></span>
             </div>
             <div class="form-group">
                 <label for="department">Department:</label>
                 <input type="text" class="form-control" id="department" name="department" th:field="*{department}">
+                <span class="text-danger" th:if="${#fields.hasErrors('department')}" th:errorclass="error" th:errors="*{department}"></span>
+
             </div>
             <div class="form-group">
                 <label for="jobRank">Job Rank:</label>
                 <input type="text" class="form-control" id="jobRank" name="jobRank" th:field="*{jobRank}">
+                <span class="text-danger" th:if="${#fields.hasErrors('jobRank')}" th:errorclass="error" th:errors="*{jobRank}"></span>
+
             </div>
             <div class="form-group">
                 <label for="salary">Salary:</label>
                 <input type="text" class="form-control" id="salary" name="salary" th:field="*{salary}">
+                <span class="text-danger" th:if="${#fields.hasErrors('salary')}" th:errorclass="error" th:errors="*{salary}"></span>
+
             </div>
-            <button type="submit" class="btn btn-primary">create</button>
+            <button type="submit" class="btn btn-primary">save</button>
             <a th:href="@{/staff/list}" class="btn btn-danger">cancel</a>
         </form>
     </main>
