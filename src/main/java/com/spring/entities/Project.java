@@ -3,6 +3,7 @@ package com.spring.entities;
 import com.spring.validation.CreateGroup;
 import com.spring.validation.UpdateGroup;
 import jakarta.persistence.*;
+import jakarta.validation.constraints.FutureOrPresent;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
@@ -35,11 +36,13 @@ public class Project {
     private String projectCode;
 
     @NotNull(message = "{project.blank.fromDate}", groups = {UpdateGroup.class, CreateGroup.class} )
+    @FutureOrPresent(message = "{project.future.fromDate}", groups = {UpdateGroup.class, CreateGroup.class})
     @Column(nullable = false)
     @DateTimeFormat(iso = DateTimeFormat.ISO.DATE)
     private LocalDate fromDate;
 
     @NotNull(message = "{project.blank.toDate}", groups = {UpdateGroup.class, CreateGroup.class} )
+    @FutureOrPresent(message = "{project.future.toDate}", groups = {UpdateGroup.class, CreateGroup.class})
     @Column(nullable = false)
     @DateTimeFormat(iso = DateTimeFormat.ISO.DATE)
     private LocalDate toDate;

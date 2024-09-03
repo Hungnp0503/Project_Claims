@@ -24,8 +24,12 @@ class ClaimsApplicationTests {
 
     @Test
 	void contextLoads() {
-		List<ProjectDetail> projectDetail = projectDetailService.readOneProjectId(14);
-		System.out.println(projectDetail);
+		List<ProjectDetail> projectDetail = projectDetailService.readOneProjectId(44);
+		for (ProjectDetail projectDetail1 : projectDetail){
+			if(projectDetail1.getRoleProject().equals("PM")){
+				System.out.println(projectDetail1.getStaff().getEmail());
+			};
+		}
 	}
 
 	@Test

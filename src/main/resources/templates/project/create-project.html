@@ -12,7 +12,7 @@
 <main class="col-md-9">
     <h1>Create Project</h1>
     <div th:if="${message != null}">
-        <span class="alert alert-danger" th:text="${message}"></span>
+        <span class="col-md-12 alert alert-danger float-right" th:text="${message}"></span>
     </div>
     <form th:action="@{/project/save}" method="post" th:object="${project}">
         <input type="hidden" name="id" th:field="*{id}">
@@ -49,7 +49,7 @@
             </tr>
             </thead>
             <tbody>
-            <tr th:if="*{id == null}" th:each="staff : ${staffList}">
+            <tr th:each="staff : ${staffList}">
                 <td>
                     <input type="hidden" name="staffId" id="staffId" th:value="${staff.staffId}" >
                     <span th:text="${staff.staffId}"></span>
@@ -68,32 +68,32 @@
                 </td>
                 <td th:text="${staff.staffName}"></td>
             </tr>
-            <tr th:if="*{id != null}" th:each="detail : ${detailList}">
-                <td>
-                    <input type="hidden" name="staffId" id="staffId1" th:value="${detail.staffId}" >
-                    <span th:text="${detail.staffId}"></span>
-                </td>
-                <td>
-                    <select class="border-none" name="position" id="position1">
-                        <option value="0" th:selected="${detail.position == null}" >Select-position</option>
-                        <option value="BA" th:selected="${detail.position == 'BA'}">BA</option>
-                        <option value="PM" th:selected="${detail.position == 'PM'}">PM</option>
-                        <option value="QA" th:selected="${detail.position == 'QA'}">QA</option>
-                        <option value="DEVELOPER" th:selected="${detail.position == 'DEVELOPER'}">DEVELOPER</option>
-                        <option value="TESTERS" th:selected="${detail.position == 'TESTERS'}">TESTERS</option>
-                        <option value="TECHNICAL_LEAD" th:selected="${detail.position == 'TECHNICAL_LEAD'}">TECHNICAL_LEAD</option>
-                        <option value="TECHNICAL_CONSULTANCY" th:selected="${detail.position == 'TECHNICAL_CONSULTANCY'}">TECHNICAL_CONSULTANCY</option>
-                    </select>
-                </td>
-                <td th:text="${detail.staffName}"></td>
-            </tr>
+<!--            <tr th:if="*{id != null}" th:each="detail : ${detailList}">-->
+<!--                <td>-->
+<!--                    <input type="hidden" name="staffId" id="staffId1" th:value="${detail.staffId}" >-->
+<!--                    <span th:text="${detail.staffId}"></span>-->
+<!--                </td>-->
+<!--                <td>-->
+<!--                    <select class="border-none" name="position" id="position1">-->
+<!--                        <option value="0" th:selected="${detail.position == null}" >Select-position</option>-->
+<!--                        <option value="BA" th:selected="${detail.position == 'BA'}">BA</option>-->
+<!--                        <option value="PM" th:selected="${detail.position == 'PM'}">PM</option>-->
+<!--                        <option value="QA" th:selected="${detail.position == 'QA'}">QA</option>-->
+<!--                        <option value="DEVELOPER" th:selected="${detail.position == 'DEVELOPER'}">DEVELOPER</option>-->
+<!--                        <option value="TESTERS" th:selected="${detail.position == 'TESTERS'}">TESTERS</option>-->
+<!--                        <option value="TECHNICAL_LEAD" th:selected="${detail.position == 'TECHNICAL_LEAD'}">TECHNICAL_LEAD</option>-->
+<!--                        <option value="TECHNICAL_CONSULTANCY" th:selected="${detail.position == 'TECHNICAL_CONSULTANCY'}">TECHNICAL_CONSULTANCY</option>-->
+<!--                    </select>-->
+<!--                </td>-->
+<!--                <td th:text="${detail.staffName}"></td>-->
+<!--            </tr>-->
             </tbody>
         </table>
 
         <div class="form-group float-right">
-            <button type="submit" class="btn btn-success ">Save</button>
+            <button type="submit" class="btn btn-success "><i class="fa-regular fa-floppy-disk"></i> Save</button>
             <button type="reset" class="btn btn-primary" >Reset</button>
-            <a th:href="@{/list}" class="btn btn-primary" >Cancel</a>
+            <a th:href="@{/list}" class="btn btn-primary" ><i class="fa-solid fa-share-from-square"></i> Cancel</a>
         </div>
 
 

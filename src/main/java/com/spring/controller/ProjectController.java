@@ -33,10 +33,6 @@ public class ProjectController {
     private final ProjectDetailService projectDetailService;
     private final ProjectDetailCustom projectDetailCustom;
 
-    @ModelAttribute("staffList")
-    public List<ProjectDTO> populateStaffList() {
-        return projectDetailCustom.getStaffNull();
-    }
     @Autowired
     public ProjectController(StaffService staffService, ProjectService projectService, ProjectDetailService projectDetailService, ProjectDetailCustom projectDetailCustom) {
         this.staffService = staffService;
@@ -52,6 +48,8 @@ public class ProjectController {
 
     @GetMapping("/project/create")
     public String homePage(Model model) {
+        List<ProjectDTO> projectDTOS = projectDetailCustom.getStaffNull();
+        model.addAttribute("staffList", projectDTOS);
         model.addAttribute("project", new Project());
         return "project/create-project";
     }
@@ -75,33 +73,38 @@ public class ProjectController {
         if (bindingResult.hasErrors()) {
             return "/project/create-project";
         }
+        if(project.getFromDate().getDayOfMonth() >= project.getToDate().getDayOfMonth()){
+            attributes.addFlashAttribute("message","To date must be greater than  from date");
+            return "redirect:/project/create";
+        }
         projectService.save(project);
         Integer id = project.getId();
         projectDetailCustom.delete(id);
         String[] staffIdArray = staffId.split(",");
         String[] positionArray = role.split(",");
+        System.out.println(staffIdArray.length + " members added and");
+        System.out.println(positionArray.length + " members added and");
         int count=0;
         for(String i : positionArray){
             if (i.equals("PM")) {
                 count++;
             }
-            if(count >=2){
-                attributes.addFlashAttribute("message","A project has only 1 PM");
-                return "redirect:/project/create";
-            }
+        }
+        if(count == 0 || count >=2){
+            attributes.addFlashAttribute("message","A project has only 1 PM");
+            return "redirect:/project/create";
         }
         count=0;
         for(String i : positionArray){
             if (i.equals("QA")) {
                 count++;
             }
-            if(count >=2){
-                attributes.addFlashAttribute("message","A project has only 1 QA");
-                return "redirect:/project/create";
-            }
         }
-        System.out.println(staffIdArray.length + " members added and");
-        System.out.println(positionArray.length + " members added and");
+        if(count == 0 || count >=2){
+            attributes.addFlashAttribute("message","A project has only 1 QA");
+            return "redirect:/project/create";
+        }
+
         List<ProjectDetail> projectDetailList = new ArrayList<>();
 
         for (int i = 0; i < staffIdArray.length; i++) {
@@ -140,11 +143,10 @@ public class ProjectController {
 
     @GetMapping("/project/edit")
     public String edit(@RequestParam("id") Integer id,Model model) {
-
         Project project = projectService.readOne(id);
         List<ProjectDTO> projectDTOs = projectDetailCustom.getObjects(id);
         model.addAttribute("project",project);
-        model.addAttribute("detailList",projectDTOs);
+        model.addAttribute("staffList",projectDTOs);
         return "project/create-project";
     }
 
