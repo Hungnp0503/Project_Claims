@@ -8,6 +8,9 @@ import com.spring.reponsitory.ProjectReponsitory;
 import com.spring.reponsitory.StaffReponsitory;
 import jakarta.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -19,7 +22,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Controller
-public class ClaimsController {
+public class CreateClaimsController {
     @Autowired
     private ProjectReponsitory projectReponsitory;
 
@@ -31,7 +34,8 @@ public class ClaimsController {
     @Autowired
     private ClaimsRepository claimsRepository;
 
-    @GetMapping("/claims")
+
+    @GetMapping("/createClaims")
     public String claimsPage( Model model, HttpSession session
                              ) {
         // Lấy dữ liệu từ database và truyền vào view
@@ -57,6 +61,7 @@ public class ClaimsController {
     }
     @PostMapping("/claims/save")
     public String saveClaims(@RequestParam("projectName") String id,
+                             @RequestParam("action") String action,
                              @ModelAttribute("claims") Claims claims,
                              Model model,
                              HttpSession session){
@@ -65,9 +70,14 @@ public class ClaimsController {
         Staff staff = (Staff) session.getAttribute("staffSesion");
         claims.setStaff(staff);
         claims.setProject(projectReponsitory.findById(projectid).get());
-        claims.setStatus(Status.Draft);
+
+        if ("save".equals(action)) {
+            claims.setStatus(Status.Draft);
+        } else if ("submit".equals(action)) {
+            claims.setStatus(Status.Pending_Approval);
+        }
         claimsRepository.save(claims);
-        return "redirect:/claims";
+        return "redirect:/claims/view";
 
     }
 

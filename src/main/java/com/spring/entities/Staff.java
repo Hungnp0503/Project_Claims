@@ -3,6 +3,7 @@ package com.spring.entities;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
+import lombok.ToString;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -10,6 +11,7 @@ import java.util.List;
 @Entity
 @Getter
 @Setter
+
 public class Staff {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -38,4 +40,17 @@ public class Staff {
 
     @OneToMany(mappedBy = "staff")
     private List<Claims> claims = new ArrayList<>();
+
+    @Override
+    public String toString() {
+        return "Staff{" +
+                "id=" + id +
+                ", staffName='" + staffName + '\'' +
+                ", email='" + email + '\'' +
+                ", password='" + password + '\'' +
+                ", department='" + department + '\'' +
+                ", jobRank='" + jobRank + '\'' +
+                ", salary=" + salary +
+                '}';
+    }
 }

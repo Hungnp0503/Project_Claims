@@ -16,7 +16,6 @@
     <form th:action="@{/claims/save}" method="post" th:object="${claims}">
         <div class="container">
             <h1>Quản Lý Dự Án</h1>
-
             <div class="steps">
                 <div class="step active" data-step="1">Thông tin nhân viên</div>
                 <div class="step" data-step="2">Thông tin dự án</div>
@@ -29,19 +28,19 @@
                 <!-- Tên nhân viên -->
                 <div class="form-group">
                     <label for="employee-name">Tên nhân viên:</label>
-                    <input type="text" id="employee-name" name="staffName" th:field="${staff.staffName}">
+                    <input type="text" id="employee-name" name="staffName" th:field="${claims.staff.staffName}">
                 </div>
 
                 <!-- Phòng nhân sự -->
                 <div class="form-group">
                     <label for="department">Phòng nhân sự:</label>
-                    <input id="department" th:field="${staff.department}"/>
+                    <input id="department" th:field="${claims.staff.department}"/>
                 </div>
 
                 <!-- Mã nhân viên -->
                 <div class="form-group">
                     <label for="employee-id">Mã nhân viên:</label>
-                    <input type="text" id="employee-id" name="staffId" th:field="${staff.id}">
+                    <input type="text" id="employee-id" name="staffId" th:field="${claims.staff.id}">
                 </div>
             </div>
 
@@ -51,15 +50,28 @@
                 <div class="form-group">
                     <label for="project-name">Tên dự án:</label>
                     <select id="project-name" name="projectName" required>
-                        <option value="">Chọn dự án</option>
-                        <th:block th:each="project : ${projects}">
-                            <option th:value="${project.id}"
-                                    th:data-start-date="${project.fromDate}"
-                                    th:data-end-date="${project.toDate}"
-                                    th:text="${project.projectName}">
+                        <!-- Hiển thị dự án trùng khớp đầu tiên -->
+                        <th:block th:if="${selectedProject != null}">
+                            <option th:value="${selectedProject.id}"
+                                    th:data-start-date="${selectedProject.fromDate}"
+                                    th:data-end-date="${selectedProject.toDate}"
+                                    selected="selected"
+                                    th:text="${selectedProject.projectName}">
                             </option>
                         </th:block>
+
+                        <!-- Hiển thị các dự án khác -->
+                        <th:block th:each="project : ${projects}">
+                            <th:block th:unless="${project.id == selectedProject.id}">
+                                <option th:value="${project.id}"
+                                        th:data-start-date="${project.fromDate}"
+                                        th:data-end-date="${project.toDate}"
+                                        th:text="${project.projectName}">
+                                </option>
+                            </th:block>
+                        </th:block>
                     </select>
+
 
                 </div>
 
@@ -123,12 +135,7 @@
 
                     <button type="submit" name="action" value="save" class="btn save-btn">Save</button>
                     <button type="submit" name="action" value="submit" class="btn submit-btn">Submit</button>
-                    <button type="button" class="btn approve-btn">Approve</button>
-                    <button type="button" class="btn reject-btn">Reject</button>
-                    <button type="button" class="btn return-btn">Return</button>
-                    <button type="button" class="btn print-btn">Print</button>
-                    <button type="button" class="btn cancel-request-btn">Cancel Request</button>
-                    <button type="button" class="btn cancel-btn">Cancel</button>
+                    <a th:href="@{/claims/delete/{id}(id=*{id})}" class="btn btn-danger btn-sm">Xóa</a>
                     <button type="button" class="btn close-btn">Close</button>
                 </div>
             </div>

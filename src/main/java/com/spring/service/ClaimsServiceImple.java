@@ -5,6 +5,8 @@ import com.spring.reponsitory.ClaimsRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
+import java.util.List;
+
 @Repository
 public class ClaimsServiceImple implements ClaimsService{
     @Autowired
@@ -15,5 +17,10 @@ public class ClaimsServiceImple implements ClaimsService{
         claimsRepository.save(claim);
 
         return claim;
+    }
+
+    @Override
+    public List<Claims> getAllClaims() {
+        return claimsRepository.findAll();
     }
 }
