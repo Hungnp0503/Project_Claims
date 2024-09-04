@@ -15,7 +15,7 @@ import java.util.List;
 public class Staff {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Integer id;
+    private Integer staffId;
 
     @Column(nullable = false)
     private String staffName;

@@ -1,15 +1,13 @@
 package com.spring.controller;
 
-import com.spring.dto.ProjectDTO;
+import com.spring.dto.StaffDTO;
 import com.spring.entities.Project;
 import com.spring.entities.ProjectDetail;
 import com.spring.entities.ProjectDetailKey;
 import com.spring.entities.Staff;
 import com.spring.repository.ProjectDetailCustom;
-import com.spring.repository.ProjectDetailCustomImpl;
 import com.spring.sevices.ProjectDetailService;
 import com.spring.sevices.ProjectService;
-import com.spring.sevices.StaffService;
 import com.spring.validation.CreateGroup;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -28,14 +26,12 @@ import java.util.List;
 @Controller
 public class ProjectController {
 
-    private final StaffService staffService;
     private final ProjectService projectService;
     private final ProjectDetailService projectDetailService;
     private final ProjectDetailCustom projectDetailCustom;
 
     @Autowired
-    public ProjectController(StaffService staffService, ProjectService projectService, ProjectDetailService projectDetailService, ProjectDetailCustom projectDetailCustom) {
-        this.staffService = staffService;
+    public ProjectController( ProjectService projectService, ProjectDetailService projectDetailService, ProjectDetailCustom projectDetailCustom) {
         this.projectService = projectService;
         this.projectDetailService = projectDetailService;
         this.projectDetailCustom = projectDetailCustom;
@@ -48,8 +44,8 @@ public class ProjectController {
 
     @GetMapping("/project/create")
     public String homePage(Model model) {
-        List<ProjectDTO> projectDTOS = projectDetailCustom.getStaffNull();
-        model.addAttribute("staffList", projectDTOS);
+        List<StaffDTO> staffDTOS = projectDetailCustom.getStaffNull();
+        model.addAttribute("staffList", staffDTOS);
         model.addAttribute("project", new Project());
         return "project/create-project";
     }
@@ -120,7 +116,7 @@ public class ProjectController {
                 projectDetail.setProject(project);
 
                 Staff staff = new Staff();
-                staff.setId(Integer.parseInt(staffIdArray[i]));
+                staff.setStaffId(Integer.parseInt(staffIdArray[i]));
                 projectDetail.setStaff(staff);
 
                 projectDetailList.add(projectDetail);
@@ -144,9 +140,9 @@ public class ProjectController {
     @GetMapping("/project/edit")
     public String edit(@RequestParam("id") Integer id,Model model) {
         Project project = projectService.readOne(id);
-        List<ProjectDTO> projectDTOs = projectDetailCustom.getObjects(id);
+        List<StaffDTO> staffDTOS = projectDetailCustom.getObjects(id);
         model.addAttribute("project",project);
-        model.addAttribute("staffList",projectDTOs);
+        model.addAttribute("staffList", staffDTOS);
         return "project/create-project";
     }
 

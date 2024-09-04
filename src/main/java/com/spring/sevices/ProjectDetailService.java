@@ -1,7 +1,5 @@
 package com.spring.sevices;
 
-import com.spring.dto.ProjectDTO;
-import com.spring.entities.Project;
 import com.spring.entities.ProjectDetail;
 import com.spring.entities.ProjectDetailKey;
 

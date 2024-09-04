@@ -1,6 +1,5 @@
 package com.spring.sevices;
 
-import com.spring.dto.ProjectDTO;
 import com.spring.entities.Project;
 
 import java.util.List;

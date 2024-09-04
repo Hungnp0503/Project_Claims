@@ -56,14 +56,14 @@
                 </td>
                 <td>
                     <select class="border-none" name="position" id="position">
-                        <option value="0" selected >Select-position</option>
-                        <option value="BA">BA</option>
-                        <option value="PM">PM</option>
-                        <option value="QA">QA</option>
-                        <option value="DEVELOPER">DEVELOPER</option>
-                        <option value="TESTERS">TESTERS</option>
-                        <option value="TECHNICAL_LEAD">TECHNICAL_LEAD</option>
-                        <option value="TECHNICAL_CONSULTANCY">TECHNICAL_CONSULTANCY</option>
+                        <option value="0" th:selected="${staff.position == null}" >Select-position</option>
+                        <option value="BA" th:selected="${staff.position == 'BA'}">BA</option>
+                        <option value="PM" th:selected="${staff.position == 'PM'}">PM</option>
+                        <option value="QA" th:selected="${staff.position == 'QA'}">QA</option>
+                        <option value="DEVELOPER" th:selected="${staff.position == 'DEVELOPER'}">DEVELOPER</option>
+                        <option value="TESTERS" th:selected="${staff.position == 'TESTERS'}">TESTERS</option>
+                        <option value="TECHNICAL_LEAD" th:selected="${staff.position == 'TECHNICAL_LEAD'}">TECHNICAL_LEAD</option>
+                        <option value="TECHNICAL_CONSULTANCY" th:selected="${staff.position == 'TECHNICAL_CONSULTANCY'}">TECHNICAL_CONSULTANCY</option>
                     </select>
                 </td>
                 <td th:text="${staff.staffName}"></td>

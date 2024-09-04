@@ -4,14 +4,12 @@ package com.spring.dto;
 
 import lombok.*;
 
-import java.time.LocalDate;
-
 @Getter
 @Setter
 @ToString
 @AllArgsConstructor
 @NoArgsConstructor
-public class ProjectDTO {
+public class StaffDTO {
 
     private Integer projectId;
     private Integer staffId;
