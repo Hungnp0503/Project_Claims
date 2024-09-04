@@ -1,3 +1,4 @@
+
 package com.spring.entities;
 
 import jakarta.persistence.*;

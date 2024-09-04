@@ -1,6 +1,7 @@
 package com.spring.entities;
 
 import jakarta.persistence.*;
+import lombok.Data;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -10,6 +11,7 @@ import java.time.LocalTime;
 @Entity
 @Getter
 @Setter
+@Data
 public class Claims {
 
     @Id
@@ -30,6 +32,8 @@ public class Claims {
     private Double totalOfHours;
 
     private Double totals;
+
+    private String status;
 
     @ManyToOne
     @JoinColumn(name = "staff_id")
