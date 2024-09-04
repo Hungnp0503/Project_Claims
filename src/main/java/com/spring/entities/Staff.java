@@ -35,6 +35,9 @@ public class Staff {
     @Column(nullable = false)
     private double salary;
 
+    @Enumerated(EnumType.STRING)
+    private RoleStaff roleStaff;
+
     @OneToMany(mappedBy = "staff")
     private List<ProjectDetail> projectDetails = new ArrayList<>();
 

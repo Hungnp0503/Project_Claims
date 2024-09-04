@@ -36,6 +36,7 @@ public class EmailReminderService {
     }
 
     @Scheduled(cron = "0 0 1 * * ?")
+//    @Scheduled(cron = "0 0 21 * * ?")
     public void sendDailyReminderEmails() throws MessagingException {
 
         List<Claims> pendingClaims = claimRepository.findPendingApprovalClaims();
