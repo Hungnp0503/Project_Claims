@@ -14,7 +14,16 @@
 <body>
 
 <main class="col-md-9">
-
+<div class="container">
+    <div class="row justify-content-center mt-4">
+        <form id="frmSearch" th:action="@{/project/list}" method="post" class="d-flex">
+            <input type="hidden" name="page" th:value="${param.page}">
+            <input type="text" name="keyword" class="form-control" placeholder="Search....." th:value="${param.keyword}"/>
+            <input class="btn btn-primary" type="submit" value="Search">
+        </form>
+        <a th:href="@{/project/create}" class="btn btn-success float-right"><i class="fa-solid fa-plus"></i> New Project</a>
+    </div>
+</div>
     <h2 class="text-center p-3">List Project</h2>
     <table class="table table-striped">
         <thead>
@@ -27,7 +36,7 @@
         </tr>
         </thead>
         <tbody>
-        <tr th:each="project : ${projectList}">
+        <tr th:each="project : ${page.content}">
             <td th:text="${project.projectCode}"></td>
             <td th:text="${project.projectName}"></td>
             <td th:text="${project.fromDate}"></td>
@@ -39,7 +48,24 @@
         </tr>
         </tbody>
     </table>
-    <a th:href="@{/project/create}" class="btn btn-success float-right">New Project</a>
+    <div class="row justify-content-center mt-2">
+        <nav aria-label="Page navigation example">
+            <ul class="pagination">
+
+                <li th:if="${page.hasPrevious()}" class="page-item"><a class="page-link" th:href="@{/project/list(page=${page.getNumber()})}">Previous</a></li>
+
+                <th:block th:each="pageNum : ${pageNums}">
+
+                    <li class="page-item" th:classappend="${pageNum == page.getNumber()+1?'active' : ''}">
+                        <a class="page-link" th:href="@{/project/list(page=${pageNum},keyword=${param.keyword})}" th:text="${pageNum}"></a>
+                    </li>
+                </th:block>
+
+                <li th:if="${page.hasNext()}" class="page-item"><a class="page-link" th:href="@{/project/list(page=${page.getNumber()+2})}">Next</a></li>
+
+            </ul>
+        </nav>
+    </div>
 </main>
 </body>
 </html>

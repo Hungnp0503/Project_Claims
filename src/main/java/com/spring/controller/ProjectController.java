@@ -6,18 +6,20 @@ import com.spring.entities.ProjectDetail;
 import com.spring.entities.ProjectDetailKey;
 import com.spring.entities.Staff;
 import com.spring.repository.ProjectDetailCustom;
+import com.spring.repository.ProjectRepository;
 import com.spring.sevices.ProjectDetailService;
 import com.spring.sevices.ProjectService;
 import com.spring.validation.CreateGroup;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.annotation.Validated;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import java.util.ArrayList;
@@ -27,12 +29,14 @@ import java.util.List;
 public class ProjectController {
 
     private final ProjectService projectService;
+    private final ProjectRepository projectRepository;
     private final ProjectDetailService projectDetailService;
     private final ProjectDetailCustom projectDetailCustom;
 
     @Autowired
-    public ProjectController( ProjectService projectService, ProjectDetailService projectDetailService, ProjectDetailCustom projectDetailCustom) {
+    public ProjectController(ProjectService projectService, ProjectRepository projectRepository, ProjectDetailService projectDetailService, ProjectDetailCustom projectDetailCustom) {
         this.projectService = projectService;
+        this.projectRepository = projectRepository;
         this.projectDetailService = projectDetailService;
         this.projectDetailCustom = projectDetailCustom;
     }
@@ -50,10 +54,29 @@ public class ProjectController {
         return "project/create-project";
     }
 
-    @GetMapping("/list")
-    public String listProject(Model model) {
-        List<Project> projects = projectService.readAll();
-        model.addAttribute("projectList", projects);
+    @RequestMapping(value="/project/list",method = {RequestMethod.GET,RequestMethod.POST})
+    public String listProject( @RequestParam(value = "page",defaultValue = "1") Integer pageNumber,
+                               @RequestParam(value = "keyword",required = false) String keyword,
+                               Model model) {
+
+        int pageSize = 5;
+
+        Pageable pageable = PageRequest.of(pageNumber-1,pageSize);
+        Page<Project> pages =null;
+        if(keyword == null || keyword.isBlank()) {
+            pages= projectRepository.findAll(pageable);
+        }else{
+            pages =projectRepository.findBySearch("%"+keyword+"%",pageable);
+        }
+
+        int totalPage = pages.getTotalPages();
+        List<Integer> pageNums = new ArrayList<>();
+        for(int i=1 ;i<=totalPage;i++){
+            pageNums.add(i);
+        }
+
+        model.addAttribute("page",pages);
+        model.addAttribute("pageNums",pageNums);
         return "project/list-project";
     }
 
@@ -145,5 +168,4 @@ public class ProjectController {
         model.addAttribute("staffList", staffDTOS);
         return "project/create-project";
     }
-
 }

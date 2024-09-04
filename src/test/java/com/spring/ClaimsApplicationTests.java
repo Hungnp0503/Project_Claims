@@ -45,18 +45,4 @@ class ClaimsApplicationTests {
 		}
 	}
 
-//	@Test
-//	void contextLoads2() throws MessagingException {
-//		String to = "nguyenhungzuka959@gmail.com";
-//		String subject = "Test Subject";
-//		String templateName = "send-email";
-//		Context context = new Context();
-//
-//		context.setVariable("name", "John Doe");
-//		// Act
-//		emailService.sendEmail(to, subject, templateName, context);
-//
-//
-//	}
-
 }
