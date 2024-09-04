@@ -33,6 +33,7 @@ public class Claims {
 
     private Double totals;
 
+    @Column(name = "status")
     private String status;
 
     @ManyToOne
