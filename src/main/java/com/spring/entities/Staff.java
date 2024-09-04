@@ -45,6 +45,9 @@ public class Staff {
     @Positive
     private Double salary;
 
+    @Enumerated(EnumType.STRING)
+    private RoleStaff roleStaff;
+
     @OneToMany(mappedBy = "staff")
     private List<ProjectDetail> projectDetails = new ArrayList<>();
 

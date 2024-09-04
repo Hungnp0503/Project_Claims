@@ -9,8 +9,9 @@ import org.springframework.data.repository.query.Param;
 
 public interface StaffRepository extends JpaRepository<Staff,Integer> {
 
+    @Query(value = "SELECT s FROM Staff s WHERE s.roleStaff='USER'")
     Page<Staff> findAll(Pageable pageable);
 
-    @Query(value = "SELECT s FROM Staff s WHERE s.staffName LIKE :search OR s.department LIKE :search OR s.jobRank LIKE :search OR s.email LIKE :search")
+    @Query(value = "SELECT s FROM Staff s WHERE s.roleStaff='USER' AND s.staffName LIKE :search OR s.department LIKE :search OR s.jobRank LIKE :search OR s.email LIKE :search")
     Page<Staff> findByStaffNameOrDepartmentOrJobRankOrEmail(@Param("search") String search, Pageable pageable);
 }

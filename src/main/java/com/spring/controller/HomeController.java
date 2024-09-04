@@ -1,5 +1,6 @@
 package com.spring.controller;
 
+import com.spring.entities.Claims;
 import com.spring.entities.Staff;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -26,6 +27,7 @@ public class HomeController {
     @GetMapping("/")
     public String homePage() {
         return "home";
+
     }
 
 

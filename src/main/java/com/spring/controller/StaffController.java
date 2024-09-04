@@ -1,5 +1,6 @@
 package com.spring.controller;
 
+import com.spring.entities.RoleStaff;
 import com.spring.entities.Staff;
 import com.spring.repository.StaffRepository;
 import com.spring.validation.CreateGroup;
@@ -33,7 +34,7 @@ public class StaffController {
             @RequestParam(value = "page" ,defaultValue = "1") Integer pageNumber,
             @RequestParam(value = "search" ,required = false) String search
     ) {
-        int pageSizeDefault = 3;
+        int pageSizeDefault = 5;
         Pageable pageable = PageRequest.of(pageNumber-1, pageSizeDefault);
         Page<Staff> page = null;
 
@@ -70,6 +71,7 @@ public class StaffController {
         if(bindingResult.hasErrors()){
             return "staff/staffCreate";
         }
+        staff.setRoleStaff(RoleStaff.USER);
         staffRepository.save(staff);
         attributes.addFlashAttribute("message", "Changes about staff have been updated");
         return "redirect:/staff/list";
