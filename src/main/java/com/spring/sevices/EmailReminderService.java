@@ -9,8 +9,6 @@ import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 import org.thymeleaf.TemplateEngine;
 import org.thymeleaf.context.Context;
-
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
@@ -35,8 +33,8 @@ public class EmailReminderService {
         this.templateEngine = templateEngine;
     }
 
+    //    @Scheduled(cron = "0 10 21 * * ?")
     @Scheduled(cron = "0 0 1 * * ?")
-//    @Scheduled(cron = "0 0 21 * * ?")
     public void sendDailyReminderEmails() throws MessagingException {
 
         List<Claims> pendingClaims = claimRepository.findPendingApprovalClaims();
