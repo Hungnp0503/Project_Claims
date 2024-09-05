@@ -12,8 +12,7 @@ public class ProjectDetail {
     @EmbeddedId
     private ProjectDetailKey projectDetailKey;
 
-    @Enumerated(EnumType.STRING)
-    private RoleProject roleProject;
+    private String roleProject;
 
     @ManyToOne
     @MapsId("projectId")
