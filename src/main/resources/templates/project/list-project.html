@@ -14,16 +14,26 @@
 
 <main class="col-md-9">
 <div class="container">
-    <div class="row justify-content-center mt-4">
-        <form id="frmSearch" th:action="@{/project/list}" method="post" class="d-flex">
-            <input type="hidden" name="page" th:value="${param.page}">
-            <input type="text" name="keyword" class="form-control" placeholder="Search....." th:value="${param.keyword}"/>
-            <input class="btn btn-primary" type="submit" value="Search">
-        </form>
-        <a th:href="@{/project/create}" class="btn btn-success float-right"><i class="fa-solid fa-plus"></i> New Project</a>
+    <div class="row mt-4">
+        <div class="col-md-12">
+            <form id="frmSearch" th:action="@{/project/list}" method="post" class="d-flex justify-content-center">
+                <input type="hidden" name="page" th:value="${param.page}">
+                <input type="text" name="keyword" class="form-control w-50" placeholder="Search....." th:value="${param.keyword}"/>
+                <input class="btn btn-primary" type="submit" value="Search">
+            </form>
+        </div>
+
+
     </div>
 </div>
-    <h2 class="text-center p-3">List Project</h2>
+    <div class="row">
+        <div class="col-md-10 text-center ">
+            <h2 class="m-3">List Project</h2>
+        </div>
+        <div class="col-md-2 ">
+            <a th:href="@{/project/create}" class="btn btn-success m-3"><i class="fa-solid fa-plus"></i>New project</a>
+        </div>
+    </div>
     <table class="table table-striped">
         <thead>
         <tr>
