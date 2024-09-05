@@ -29,6 +29,9 @@ public class Claims {
 
     private Double totalOfHours;
 
+    @Enumerated(EnumType.STRING)
+    private Status status;
+
     @ManyToOne
     @JoinColumn(name = "staff_id")
     private Staff staff;

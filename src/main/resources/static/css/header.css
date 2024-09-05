@@ -46,3 +46,7 @@ li:hover {
 .fa-2x {
     color:white;
 }
+
+.error {
+    color: red;
+}

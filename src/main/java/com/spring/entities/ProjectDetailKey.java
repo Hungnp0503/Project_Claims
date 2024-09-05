@@ -1,15 +1,20 @@
 package com.spring.entities;
 
 import jakarta.persistence.Embeddable;
-import lombok.Getter;
-import lombok.Setter;
+import lombok.*;
+
+import java.io.Serializable;
 
 @Embeddable
 @Getter
 @Setter
-public class ProjectDetailKey {
+@AllArgsConstructor
+@NoArgsConstructor
+@ToString
+public class ProjectDetailKey implements Serializable {
     
     private Integer projectId;
     
     private Integer staffId;
+
 }
