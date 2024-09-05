@@ -53,12 +53,18 @@
                     <select id="project-name" name="projectName" required>
                         <option value="">Chọn dự án</option>
                         <th:block th:each="project : ${projects}">
-                            <option th:value="${project.id}"
-                                    th:data-start-date="${project.fromDate}"
-                                    th:data-end-date="${project.toDate}"
-                                    th:text="${project.projectName}">
-                            </option>
+
+                                <option th:value="${project.id}"
+                                        th:data-start-date="${project.fromDate}"
+                                        th:data-end-date="${project.toDate}"
+                                        th:text="${project.projectName}"
+                                        th:data-role="${projectRoles[project.id]}">
+                                </option>
+
                         </th:block>
+
+
+
                     </select>
 
                 </div>
@@ -66,10 +72,7 @@
                 <!-- Vai trò trong dự án -->
                 <div class="form-group">
                     <label for="role">Vai trò trong dự án:</label>
-                    <select id="role" name="role">
-                        <option value="leader">Trưởng dự án</option>
-                        <option value="member">Thành viên</option>
-                    </select>
+                    <input type="text" id ="role" name="role">
                 </div>
 
                 <!-- Thời lượng dự án -->

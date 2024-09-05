@@ -12,8 +12,8 @@ public class ProjectDetail {
     @EmbeddedId
     private ProjectDetailKey projectDetailKey;
 
-    @Enumerated(EnumType.STRING)
-    private RoleProject roleProject;
+
+    private String  roleProject;
 
     @ManyToOne
     @MapsId("projectId")
@@ -23,5 +23,13 @@ public class ProjectDetail {
     @MapsId("staffId")
     private Staff staff;
 
-
+    @Override
+    public String toString() {
+        return "ProjectDetail{" +
+                "projectDetailKey=" + projectDetailKey +
+                ", roleProject='" + roleProject + '\'' +
+                ", project=" + project +
+                ", staff=" + staff +
+                '}';
+    }
 }

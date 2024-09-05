@@ -8,4 +8,5 @@ import java.util.List;
 
 public interface ProjectDetailReponsitory extends JpaRepository<ProjectDetail, ProjectDetailKey> {
     List<ProjectDetail> findByProjectDetailKeyStaffId(Integer staffId);
+    ProjectDetail findByProjectDetailKey(ProjectDetailKey projectDetailKey);
 }

@@ -19,7 +19,10 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+import java.util.stream.Collectors;
 
 @Controller
 public class CreateClaimsController {
@@ -45,15 +48,24 @@ public class CreateClaimsController {
             model.addAttribute("staff",staff);
             model.addAttribute("claims", new Claims());
             session.setAttribute("staffSesion",staff);
+
             List<ProjectDetail> projectDetails = projectDetailReponsitory.findByProjectDetailKeyStaffId(staff.getId());
             List<Integer> ids = new ArrayList<>();
 
             for (ProjectDetail projectDetail : projectDetails) {
                 ids.add(projectDetail.getProject().getId());
             }
-
             List<Project> projects = projectReponsitory.findAllById(ids);
+            Map<Integer, String> projectRoles = new HashMap<>();
+            for (Project project : projects) {
+                String roles = projectDetails.stream()
+                        .filter(pd -> pd.getProject().getId().equals(project.getId()))
+                        .map(ProjectDetail::getRoleProject)
+                        .collect(Collectors.joining(", "));
+                projectRoles.put(project.getId(), roles);
+            }
             model.addAttribute("projects",projects);
+            model.addAttribute("projectRoles", projectRoles);
 
         }
 
