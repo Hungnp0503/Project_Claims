@@ -13,21 +13,21 @@ import java.nio.charset.StandardCharsets;
 public class AppConfig implements WebMvcConfigurer {
 
 
-//    @Override
-//    public void addResourceHandlers(ResourceHandlerRegistry registry) {
-//
-//        registry.addResourceHandler("/image/**").addResourceLocations("classpath:/image/");
-//
-//        registry.addResourceHandler("/css/**")
-//                .addResourceLocations("classpath:/static/css/")
-//                .setCachePeriod(3600)
-//                .resourceChain(true);
-//
-//        registry.addResourceHandler("/js/**")
-//                .addResourceLocations("classpath:/static/js/")
-//                .setCachePeriod(3600)
-//                .resourceChain(true);
-//    }
+    @Override
+    public void addResourceHandlers(ResourceHandlerRegistry registry) {
+
+        registry.addResourceHandler("/image/**").addResourceLocations("classpath:/image/");
+
+        registry.addResourceHandler("/css/**")
+                .addResourceLocations("classpath:/static/css/")
+                .setCachePeriod(3600)
+                .resourceChain(true);
+
+        registry.addResourceHandler("/js/**")
+                .addResourceLocations("classpath:/static/js/")
+                .setCachePeriod(3600)
+                .resourceChain(true);
+    }
 
 
     @Bean
