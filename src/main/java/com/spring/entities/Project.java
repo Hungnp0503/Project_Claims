@@ -50,7 +50,7 @@ public class Project {
     @OneToMany(mappedBy = "project",cascade = CascadeType.ALL)
     private List<ProjectDetail> projectDetails = new ArrayList<>();
 
-    @OneToMany(mappedBy = "project")
+    @OneToMany(mappedBy = "project",cascade = CascadeType.ALL)
     private List<Claims> claims = new ArrayList<>();
 
 }

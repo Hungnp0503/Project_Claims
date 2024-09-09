@@ -88,7 +88,11 @@ public class ProjectController {
             BindingResult bindingResult,
             @RequestParam("staffId") String staffId,
             @RequestParam("position") String role,
+            Model model,
             RedirectAttributes attributes) {
+
+        List<StaffDTO> staffDTOS = projectDetailCustom.getStaffNull();
+        model.addAttribute("staffList", staffDTOS);
         if (bindingResult.hasErrors()) {
             return "/project/create-project";
         }
@@ -101,8 +105,7 @@ public class ProjectController {
         projectDetailCustom.delete(id);
         String[] staffIdArray = staffId.split(",");
         String[] positionArray = role.split(",");
-        System.out.println(staffIdArray.length + " members added and");
-        System.out.println(positionArray.length + " members added and");
+
         int count=0;
         for(String i : positionArray){
             if (i.equals("PM")) {
@@ -149,7 +152,7 @@ public class ProjectController {
             projectDetailService.save(detail);
         }
 
-        return "redirect:/list";
+        return "redirect:/project/list";
     }
 
     @GetMapping("/project/delete")
@@ -157,7 +160,7 @@ public class ProjectController {
 
         projectService.delete(id);
         attributes.addFlashAttribute("message", "Project deleted successfully");
-        return "redirect:/list";
+        return "redirect:/project/list";
     }
 
     @GetMapping("/project/edit")
