@@ -6,6 +6,7 @@ import com.spring.reponsitory.ClaimsRepository;
 import com.spring.reponsitory.ProjectDetailReponsitory;
 import com.spring.reponsitory.ProjectReponsitory;
 import com.spring.reponsitory.StaffReponsitory;
+import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -18,10 +19,9 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.time.LocalDate;
+import java.time.LocalTime;
+import java.util.*;
 import java.util.stream.Collectors;
 
 @Controller
@@ -45,10 +45,14 @@ public class CreateClaimsController {
         String email ="staff1@gmail.com";
         Staff staff = staffReponsitory.findByEmail(email);
         if(staff!=null){
-            model.addAttribute("staff",staff);
-            model.addAttribute("claims", new Claims());
+           Claims claim = new Claims();
+            if (claim.getClaimDays() == null || claim.getClaimDays().isEmpty()) {
+                claim.setClaimDays(new ArrayList<>());
+                claim.getClaimDays().add(new ClaimsDetails()); // Thêm 1 hàng trống ban đầu
+            }
+           claim.setStaff(staff);
+            model.addAttribute("claims", claim);
             session.setAttribute("staffSesion",staff);
-
             List<ProjectDetail> projectDetails = projectDetailReponsitory.findByProjectDetailKeyStaffId(staff.getId());
             List<Integer> ids = new ArrayList<>();
 
@@ -76,18 +80,33 @@ public class CreateClaimsController {
                              @RequestParam("action") String action,
                              @ModelAttribute("claims") Claims claims,
                              Model model,
+                             HttpServletRequest request,
                              HttpSession session){
         Integer projectid = Integer.parseInt(id);
         // Lưu dữ liệu vào database
         Staff staff = (Staff) session.getAttribute("staffSesion");
         claims.setStaff(staff);
         claims.setProject(projectReponsitory.findById(projectid).get());
+        List<ClaimsDetails> days = new ArrayList<>();
+        int dayIndex = 0;
+        while (request.getParameter("claimDays[" + dayIndex + "].date") != null) {
+            ClaimsDetails day = new ClaimsDetails();
+            day.setDate(LocalDate.parse(request.getParameter("claimDays[" + dayIndex + "].date")));
+            day.setDay(request.getParameter("claimDays[" + dayIndex + "].day"));
+            day.setFromDate(LocalTime.parse(request.getParameter("claimDays[" + dayIndex + "].fromDate")));
+            day.setToDate(LocalTime.parse(request.getParameter("claimDays[" + dayIndex + "].toDate")));
+            day.setTotalOfHours(Double.parseDouble(request.getParameter("claimDays[" + dayIndex + "].totalOfHours")));
+            day.setDescription(request.getParameter("claimDays[" + dayIndex + "].description"));
+            days.add(day);
+            dayIndex++;
+        }
 
         if ("save".equals(action)) {
             claims.setStatus(Status.Draft);
         } else if ("submit".equals(action)) {
             claims.setStatus(Status.Pending_Approval);
         }
+        claims.setClaimDays(days);
         claimsRepository.save(claims);
         return "redirect:/claims/view";
 

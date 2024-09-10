@@ -40,130 +40,144 @@ document.addEventListener('DOMContentLoaded', function() {
     showStep(currentStep);
 });
 
-// Xử lý ngày và thời gian
-document.addEventListener('DOMContentLoaded', function() {
-    const dayInput = document.getElementById("day");
-    const projectSelect = document.getElementById('project-name');
-    const dayOfWeekInput = document.getElementById("day-of-week");
-    const startTimeInput = document.getElementById("start-time");
-    const endTimeInput = document.getElementById("end-time");
-    const totalHoursInput = document.getElementById("total-hours");
+// Hàm kiểm tra thời gian dự án
+function validateTimes() {
     const projectStartTime = document.getElementById("project-start-time");
     const projectEndTime = document.getElementById("project-end-time");
-    // Hàm kiểm tra thời gian
-    function validateTimes() {
-        const startDate = new Date(projectStartTime.value);
-        const endDate = new Date(projectEndTime.value);
 
-        if (projectStartTime.value && projectEndTime.value) {
-            if (startDate >= endDate) {
-                alert("Ngày bắt đầu phải nhỏ hơn ngày kết thúc.");
-                projectStartTime.value="";
-                projectEndTime.value="";
-            }
-        } else {
-            alert("Vui lòng nhập cả ngày bắt đầu và ngày kết thúc.");
+    const startDate = new Date(projectStartTime.value);
+    const endDate = new Date(projectEndTime.value);
 
+    if (projectStartTime.value && projectEndTime.value) {
+        if (startDate >= endDate) {
+            alert("Ngày bắt đầu phải nhỏ hơn ngày kết thúc.");
+            projectStartTime.value = "";
+            projectEndTime.value = "";
         }
-
     }
-    function validateTime() {
-        const startTime = startTimeInput.value;
-        const endTime = endTimeInput.value;
+}
 
-        if (startTime && endTime) {
-            const start = new Date(`1970-01-01T${startTime}:00`);
-            const end = new Date(`1970-01-01T${endTime}:00`);
+// Hàm kiểm tra thời gian làm việc
+function validateTime(startTimeInput, endTimeInput) {
+    const startTime = startTimeInput.value;
+    const endTime = endTimeInput.value;
 
-            if (start >= end) {
-                alert("Thời gian bắt đầu phải nhỏ hơn thời gian kết thúc.");
-                return false;
-            }
-        } else {
-            alert("Vui lòng nhập cả thời gian bắt đầu và thời gian kết thúc.");
+    if (startTime && endTime) {
+        const start = new Date(`1970-01-01T${startTime}:00`);
+        const end = new Date(`1970-01-01T${endTime}:00`);
+
+        if (start >= end) {
+            alert("Thời gian bắt đầu phải nhỏ hơn thời gian kết thúc.");
             return false;
         }
-        return true;
+    } else {
+        alert("Vui lòng nhập cả thời gian bắt đầu và kết thúc.");
+        return false;
     }
+    return true;
+}
 
-    // Hàm tính toán tổng số giờ làm việc
-    function calculateTotalHours() {
-        if (validateTime()) {
-            const startTime = startTimeInput.value;
-            const endTime = endTimeInput.value;
+// Hàm tính toán tổng số giờ làm việc
+function calculateTotalHours(row) {
+    const startTimeInput = row.querySelector('.start-time');
+    const endTimeInput = row.querySelector('.end-time');
+    const totalHoursInput = row.querySelector('.total-hours');
 
-            const start = new Date(`1970-01-01T${startTime}:00`);
-            const end = new Date(`1970-01-01T${endTime}:00`);
+    if (validateTime(startTimeInput, endTimeInput)) {
+        const start = new Date(`1970-01-01T${startTimeInput.value}:00`);
+        const end = new Date(`1970-01-01T${endTimeInput.value}:00`);
+        const diff = (end - start) / 1000 / 60 / 60;
 
-            let diff = (end - start) / 1000 / 60 / 60;
-
-            if (diff < 0) {
-                diff += 24;
-            }
-
-            totalHoursInput.value = diff.toFixed(2);
-        } else {
-            totalHoursInput.value = "";
-        }
+        totalHoursInput.value = diff > 0 ? diff.toFixed(2) : "";
     }
+}
 
-    // Cập nhật thứ trong tuần dựa trên ngày
-    function updateDayOfWeek() {
-        const dateValue = dayInput.value;
-        if (dateValue) {
-            const date = new Date(dateValue);
-            const daysOfWeek = ["Chủ nhật", "Thứ hai", "Thứ ba", "Thứ tư", "Thứ năm", "Thứ sáu", "Thứ bảy"];
-            const dayOfWeek = daysOfWeek[date.getDay()];
-            dayOfWeekInput.value = dayOfWeek;
-        } else {
-            dayOfWeekInput.value = "";
-        }
+// Cập nhật thứ trong tuần dựa trên ngày
+function updateDayOfWeek(dayInput, dayOfWeekInput) {
+    if (dayInput.value) {
+        const date = new Date(dayInput.value);
+        const daysOfWeek = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"];
+        dayOfWeekInput.value = daysOfWeek[date.getDay()];
+    } else {
+        dayOfWeekInput.value = "";
     }
+}
 
-    endTimeInput.addEventListener("change", calculateTotalHours);
+// Gắn sự kiện cho các trường đầu vào
+document.addEventListener('DOMContentLoaded', function() {
+    const projectStartTime = document.getElementById("project-start-time");
+    const projectEndTime = document.getElementById("project-end-time");
+
     projectEndTime.addEventListener("change", validateTimes);
-    dayInput.addEventListener("change", updateDayOfWeek);
+    document.querySelectorAll('#claims-body .day').forEach(input => {
+        input.addEventListener('change', function() {
+            updateDayOfWeek(this, this.closest('tr').querySelector('.day-of-week'));
+        });
+    });
+    document.querySelectorAll('#claims-body .start-time, #claims-body .end-time').forEach(input => {
+        input.addEventListener('change', function() {
+            calculateTotalHours(this.closest('tr'));
+        });
+    });
 
-    // Xử lý các nút hành động
-    const buttons = document.querySelectorAll(".action-buttons button");
+    // Khi nhấn nút "Thêm ngày"
+    document.getElementById("add-day-btn").addEventListener("click", function() {
+        let dayIndex = 1;
+        // Lấy phần tbody của bảng
+        const tbody = document.getElementById("claims-body");
 
-    buttons.forEach(button => {
-        button.addEventListener("click", function(event) {
-            const action = button.textContent.trim();
+        // Tạo một hàng mới
+        const newRow = document.createElement("tr");
 
-            switch (action) {
-                case "Save":
-                    alert("Dữ liệu đã được lưu thành công!");
-                    break;
-                case "Submit":
-                    alert("Yêu cầu đã được gửi đi!");
-                    break;
-                case "Approve":
-                    alert("Yêu cầu đã được duyệt!");
-                    break;
-                case "Reject":
-                    alert("Yêu cầu đã bị từ chối!");
-                    break;
-                case "Return":
-                    alert("Yêu cầu đã được gửi lại để chỉnh sửa!");
-                    break;
-                case "Print":
-                    alert("Đang chuẩn bị để in thông tin!");
-                    window.print(); // In trang
-                    break;
-                case "Cancel Request":
-                    alert("Yêu cầu đã bị hủy!");
-                    break;
-                case "Cancel":
-                    alert("Thao tác đã bị hủy!");
-                    break;
-                case "Close":
-                    alert("Đóng cửa sổ!");
-                    window.close(); // Đóng cửa sổ trình duyệt
-                    break;
-                default:
-                    console.warn("Hành động không xác định:", action);
-            }
+        // Nội dung của hàng mới
+        newRow.innerHTML = `
+            <td>
+                <input type="date" class="day" name="claimDays[${dayIndex}].date">
+            </td>
+            <td>
+                <input type="text" class="day-of-week" name="claimDays[${dayIndex}].day" readonly>
+            </td>
+            <td>
+                <input type="time" class="start-time" name="claimDays[${dayIndex}].fromDate">
+            </td>
+            <td>
+                <input type="time" class="end-time" name="claimDays[${dayIndex}].toDate">
+            </td>
+            <td>
+                <input type="text" class="total-hours" name="claimDays[${dayIndex}].totalOfHours" readonly>
+            </td>
+            <td>
+                <textarea class="remarks" name="claimDays[${dayIndex}].description" rows="2"></textarea>
+            </td>
+            <td>
+                <button type="button" class="btn btn-danger remove-btn">Cancel</button>
+            </td>
+        `;
+
+
+        // Thêm hàng mới vào tbody
+        tbody.appendChild(newRow);
+
+        // Gán sự kiện cho các phần tử mới
+        newRow.querySelector('.day').addEventListener('change', function() {
+            updateDayOfWeek(this, this.closest('tr').querySelector('.day-of-week'));
+        });
+        newRow.querySelector('.start-time').addEventListener('change', function() {
+            calculateTotalHours(this.closest('tr'));
+        });
+        newRow.querySelector('.end-time').addEventListener('change', function() {
+            calculateTotalHours(this.closest('tr'));
+        });
+        newRow.querySelector('.remove-btn').addEventListener('click', function() {
+            newRow.remove();
+        });
+        dayIndex++;
+    });
+
+    // Thêm sự kiện xóa cho nút Xóa của hàng đầu tiên
+    document.querySelectorAll(".remove-btn").forEach(function(button) {
+        button.addEventListener("click", function() {
+            button.closest("tr").remove();
         });
     });
 });

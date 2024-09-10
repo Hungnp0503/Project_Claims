@@ -14,6 +14,7 @@
 <body>
 <main class="col-md-9">
     <form th:action="@{/claims/save}" method="post" th:object="${claims}">
+        <input type="hidden" name="id" th:field="*{id}">
         <div class="container">
             <h1>Quản Lý Dự Án</h1>
 
@@ -29,19 +30,19 @@
                 <!-- Tên nhân viên -->
                 <div class="form-group">
                     <label for="employee-name">Tên nhân viên:</label>
-                    <input type="text" id="employee-name" name="staffName" th:field="${staff.staffName}">
+                    <input type="text" id="employee-name" name="staffName" th:field="*{staff.staffName}">
                 </div>
 
                 <!-- Phòng nhân sự -->
                 <div class="form-group">
                     <label for="department">Phòng nhân sự:</label>
-                    <input id="department" th:field="${staff.department}"/>
+                    <input id="department" th:field="*{staff.department}"/>
                 </div>
 
                 <!-- Mã nhân viên -->
                 <div class="form-group">
                     <label for="employee-id">Mã nhân viên:</label>
-                    <input type="text" id="employee-id" name="staffId" th:field="${staff.id}">
+                    <input type="text" id="employee-id" name="staffId" th:field="*{staff.id}">
                 </div>
             </div>
 
@@ -52,15 +53,38 @@
                     <label for="project-name">Tên dự án:</label>
                     <select id="project-name" name="projectName" required>
                         <option value="">Chọn dự án</option>
-                        <th:block th:each="project : ${projects}">
+<!--                        <th:block th:each="project : ${projects}">-->
 
+<!--&lt;!&ndash;                                <option th:value="${project.id}"&ndash;&gt;-->
+<!--&lt;!&ndash;                                        th:data-start-date="${project.fromDate}"&ndash;&gt;-->
+<!--&lt;!&ndash;                                        th:data-end-date="${project.toDate}"&ndash;&gt;-->
+<!--&lt;!&ndash;                                        th:text="${project.projectName}"&ndash;&gt;-->
+<!--&lt;!&ndash;                                        th:data-role="${projectRoles[project.id]}">&ndash;&gt;-->
+<!--&lt;!&ndash;                                </option>&ndash;&gt;-->
+<!--                        -->
+<!--                        </th:block>-->
+                        <th:block th:if="${selectedProject != null}">
+                            <option th:value="${selectedProject.id}"
+                                    th:data-start-date="${selectedProject.fromDate}"
+                                    th:data-end-date="${selectedProject.toDate}"
+                                    selected="selected"
+                                    th:text="${selectedProject.projectName}"
+                                    th:data-role="${projectRoles[selectedProject.id]}"
+                            >
+                            </option>
+                        </th:block>
+
+                        <!-- Hiển thị các dự án khác -->
+                        <th:block th:each="project : ${projects}">
+<!--                            <th:block th:unless="${project.id == selectedProject.id}">-->
                                 <option th:value="${project.id}"
                                         th:data-start-date="${project.fromDate}"
                                         th:data-end-date="${project.toDate}"
                                         th:text="${project.projectName}"
-                                        th:data-role="${projectRoles[project.id]}">
+                                        th:data-role="${projectRoles[project.id]}"
+                                >
                                 </option>
-
+<!--                            </th:block>-->
                         </th:block>
 
 
@@ -87,41 +111,53 @@
 
             <!-- Bước 3: Yêu cầu bồi thường -->
             <div class="form-step" data-step="3">
-                <!-- Ngày -->
-                <div class="form-group">
-                    <label for="day">Ngày:</label>
-                    <input type="date" id="day" name="day" th:field="*{date}">
+                <div class="table-responsive">
+
+
+                <table class="table table-bordered" id="claims-table">
+                    <thead>
+                    <tr>
+                        <th>Ngày</th>
+                        <th>Thứ trong tuần</th>
+                        <th>Thời gian bắt đầu</th>
+                        <th>Thời gian kết thúc</th>
+                        <th>Tổng số giờ</th>
+                        <th>Ghi chú</th>
+                        <th>Hành động</th>
+                    </tr>
+                    </thead>
+                    <tbody id="claims-body">
+
+                    <tr>
+                        <td>
+                            <input type="date" id="day" class="day" name="claimDays[0].date" >
+                        </td>
+                        <td>
+                            <input type="text" class="day-of-week" id="day-of-week" name="claimDays[0].day" readonly >
+                        </td>
+                        <td>
+                            <input type="time" class="start-time" id="start-time" name="claimDays[0].fromDate" >
+                        </td>
+                        <td>
+                            <input type="time" class="end-time" id="end-time" name="claimDays[0].toDate">
+                        </td>
+                        <td>
+                            <input type="text" class="total-hours" id="total-hours" name="claimDays[0].totalOfHours" readonly >
+                        </td>
+                        <td>
+                            <textarea class="remarks" name="claimDays[0].description" rows="2" ></textarea>
+                        </td>
+                        <td>
+                            <button type="button" class="btn btn-danger remove-btn">Cancel</button>
+                        </td>
+                    </tr>
+
+                    </tbody>
+                </table>
                 </div>
 
-                <!-- Thứ trong tuần -->
-                <div class="form-group">
-                    <label for="day-of-week">Thứ trong tuần:</label>
-                    <input type="text" id="day-of-week" name="dayOfWeek" readonly th:field="*{day}">
-                </div>
-
-                <!-- Thời gian bắt đầu -->
-                <div class="form-group">
-                    <label for="start-time">Từ:</label>
-                    <input type="time" id="start-time" name="startTime" th:field="*{fromDate}">
-                </div>
-
-                <!-- Thời gian kết thúc -->
-                <div class="form-group">
-                    <label for="end-time">Đến:</label>
-                    <input type="time" id="end-time" name="endTime" th:field="*{toDate}">
-                </div>
-
-                <!-- Tổng số giờ -->
-                <div class="form-group">
-                    <label for="total-hours">Tổng số giờ:</label>
-                    <input type="text" id="total-hours" name="totalHours" readonly th:field="*{totalOfHours}">
-                </div>
-
-                <!-- Ghi chú -->
-                <div class="form-group">
-                    <label for="remarks">Ghi chú:</label>
-                    <textarea id="remarks" name="remarks" rows="4" th:field="*{description}"></textarea>
-                </div>
+                <!-- Nút thêm ngày mới -->
+                <button type="button" class="btn btn-primary mt-3" id="add-day-btn">+Add Day</button>
                 <div class="action-buttons">
 
                     <button type="submit" name="action" value="save" class="btn save-btn">Save</button>
@@ -135,17 +171,23 @@
                     <button type="button" class="btn close-btn">Close</button>
                 </div>
             </div>
+
+
+
+
+
             <!-- Nút hành động -->
             <div class="action-buttons navigation-buttons">
                 <button type="button" class="btn prev-btn" onclick="prevStep()">Quay lại</button>
                 <button type="button" class="btn next-btn" onclick="nextStep()">Tiếp theo</button>
 
             </div>
+        </div>
 
             <script th:src="@{/js/claim/CreateClaim.js}"></script>
             <script th:src="@{/js/claim/create2.js}"></script>
 
-        </div>
+
     </form>
 </main>
 

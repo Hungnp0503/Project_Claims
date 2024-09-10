@@ -36,14 +36,37 @@
         <table class="table table-bordered table-striped mt-4">
             <thead class="thead-dark">
             <tr>
-                <th>ID</th>
-                <th>Tên Nhân Viên</th>
-                <th>Tên Dự Án</th>
-                <th>Ngày</th>
-                <th>Thời Gian Bắt Đầu</th>
-                <th>Thời Gian Kết Thúc</th>
-                <th>Tổng Số Giờ</th>
-                <th>Trạng Thái</th>
+                <th>
+                    <a th:href="@{/claims/view(sort='id', direction=${sort == 'id' and direction == 'asc' ? 'desc' : 'asc'}, status=${status})}">
+                        ID
+                        <span th:if="${sort == 'id'}" th:text="${direction == 'asc' ? '↑' : '↓'}"></span>
+                    </a>
+                </th>
+                <th>
+                    <a th:href="@{/claims/view(sort='staff.staffName', direction=${sort == 'staff.staffName' and direction == 'asc' ? 'desc' : 'asc'}, status=${status})}">
+                        Tên Nhân Viên
+                        <span th:if="${sort == 'staff.staffName'}" th:text="${direction == 'asc' ? '↑' : '↓'}"></span>
+                    </a>
+                </th>
+                <th>
+                    <a th:href="@{/claims/view(sort='project.projectName', direction=${sort == 'project.projectName' and direction == 'asc' ? 'desc' : 'asc'}, status=${status})}">
+                        Tên Dự Án
+                        <span th:if="${sort == 'project.projectName'}" th:text="${direction == 'asc' ? '↑' : '↓'}"></span>
+                    </a>
+                </th>
+                <th>
+                    <a th:href="@{/claims/view(sort='date', direction=${sort == 'date' and direction == 'asc' ? 'desc' : 'asc'}, status=${status})}">
+                        Ngày
+                        <span th:if="${sort == 'date'}" th:text="${direction == 'asc' ? '↑' : '↓'}"></span>
+                    </a>
+                </th>
+
+                <th>
+                    <a th:href="@{/claims/view(sort='status', direction=${sort == 'status' and direction == 'asc' ? 'desc' : 'asc'}, status=${status})}">
+                        Trạng Thái
+                        <span th:if="${sort == 'status'}" th:text="${direction == 'asc' ? '↑' : '↓'}"></span>
+                    </a>
+                </th>
                 <th>Hành Động</th>
             </tr>
             </thead>
@@ -52,13 +75,19 @@
                 <td th:text="${claim.id}"></td>
                 <td th:text="${claim.staff != null} ? ${claim.staff.staffName} : 'N/A'"></td>
                 <td th:text="${claim.project.projectName}"></td>
-                <td th:text="${claim.date}"></td>
-                <td th:text="${claim.fromDate}"></td>
-                <td th:text="${claim.toDate}"></td>
-                <td th:text="${claim.totalOfHours}"></td>
+
+                <td>
+                    <ul>
+                        <li th:each="claimsday : ${claim.claimDays}"
+                            th:text="${claimsday.date + ' ' + claimsday.fromDate + ' - ' + claimsday.toDate}">
+                        </li>
+                    </ul>
+                </td>
+
+
                 <td th:text="${claim.status}"></td>
                 <td>
-                    <a th:href="@{/claims/edit/{id}(id=${claim.id})}" class="btn btn-primary btn-sm">Chỉnh sửa</a>
+                    <a th:href="@{/claims/update/{id}(id=${claim.id})}" class="btn btn-primary btn-sm">Chỉnh sửa</a>
                     <a th:href="@{/claims/delete/{id}(id=${claim.id})}" class="btn btn-danger btn-sm">Xóa</a>
                 </td>
             </tr>

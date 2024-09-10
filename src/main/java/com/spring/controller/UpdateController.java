@@ -19,10 +19,8 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import java.sql.Time;
 import java.time.LocalTime;
 import java.time.ZoneId;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
+import java.util.stream.Collectors;
 
 @Controller
 public class UpdateController {
@@ -36,7 +34,7 @@ public class UpdateController {
     private ProjectDetailReponsitory projectDetailReponsitory;
     @Autowired
     private ClaimsRepository claimsRepository;
-    @GetMapping(value = {"claims/edit/{id}"})
+    @GetMapping(value = {"claims/update/{id}"})
     public String claimsPage(
             @PathVariable("id") Integer id,
             Model model, HttpSession session
@@ -50,14 +48,22 @@ public class UpdateController {
         for (ProjectDetail projectDetail : projectDetails) {
             ids.add(projectDetail.getProject().getId());
         }
-
-
         List<Project> projects = projectReponsitory.findAllById(ids);
+        Map<Integer, String> projectRoles = new HashMap<>();
+        for (Project project : projects) {
+            String roles = projectDetails.stream()
+                    .filter(pd -> pd.getProject().getId().equals(project.getId()))
+                    .map(ProjectDetail::getRoleProject)
+                    .collect(Collectors.joining(", "));
+            projectRoles.put(project.getId(), roles);
+        }
+        model.addAttribute("projects",projects);
+        model.addAttribute("projectRoles", projectRoles);
+
         Project selectedProject = projectReponsitory.findById(claim.getProject().getId()).orElse(null);
         model.addAttribute("claims",claim);
         model.addAttribute("selectedProject", selectedProject);
-        model.addAttribute("projects",projects);
-        return "claims/UpdateClaims";
+        return "claims/createClaims";
     }
 
     @GetMapping(value = {"/claims/delete/{id}"})

@@ -45,3 +45,11 @@
     width: auto;
     margin-right: 10px;
 }
+thead a {
+    color: white; /* Set text color to white */
+    text-decoration: none; /* Optional: Remove underline from links */
+}
+
+thead a:hover {
+    color: cyan; /* Optional: Set a different color on hover */
+}

@@ -4,10 +4,9 @@ import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
-import org.springframework.format.annotation.DateTimeFormat;
 
-import java.time.LocalDate;
-import java.time.LocalTime;
+import java.util.*;
+
 
 @Entity
 @Getter
@@ -18,28 +17,10 @@ public class Claims {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
-
-    @Temporal(TemporalType.DATE)
-    @DateTimeFormat(iso = DateTimeFormat.ISO.DATE)
-    private LocalDate date;
-
-
-    private String day;
-
-    @Temporal(TemporalType.TIME)
-    @DateTimeFormat(iso = DateTimeFormat.ISO.TIME)
-    private LocalTime fromDate;
-
-    @Temporal(TemporalType.TIME)
-    @DateTimeFormat(iso = DateTimeFormat.ISO.TIME)
-    private LocalTime toDate;
-
-    private Double totalOfHours;
-
     @Enumerated(EnumType.STRING)
     private Status status;
 
-    private String description;
+
     @ManyToOne
     @JoinColumn(name = "staff_id")
     private Staff staff;
@@ -47,6 +28,10 @@ public class Claims {
     @ManyToOne
     @JoinColumn(name = "project_id")
     private Project project;
+
+    @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
+    @JoinColumn(name = "claim_id")
+    private List<ClaimsDetails> claimDays = new ArrayList<>();
 
 
 }

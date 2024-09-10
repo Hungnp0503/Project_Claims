@@ -58,6 +58,7 @@ h1 {
 
 /* Form Bước */
 .form-step {
+    width: 100%;
     display: none;
 }
 
@@ -187,6 +188,15 @@ textarea {
     border: 1px solid #ccc; /* Viền nhẹ */
     padding: 8px; /* Padding cho sự thoải mái khi nhập liệu */
     border-radius: 4px; /* Bo góc nhẹ */
+}
+.table-responsive {
+    width: 100%;
+    max-height: 300px; /* Giới hạn chiều cao */
+    overflow-y: auto;  /* Kích hoạt cuộn dọc khi vượt quá chiều cao */
+}
+form {
+    max-height: 80vh; /* Chiều cao tối đa là 80% của chiều cao màn hình */
+    overflow-y: auto;  /* Kích hoạt cuộn dọc nếu nội dung vượt quá chiều cao */
 }
 
 /* Các nút cụ thể */
