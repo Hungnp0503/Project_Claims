@@ -94,18 +94,18 @@ public class ProjectController {
         List<StaffDTO> staffDTOS = projectDetailCustom.getStaffNull();
         model.addAttribute("staffList", staffDTOS);
         if (bindingResult.hasErrors()) {
-            return "/project/create-project";
+            return "redirect:/project/create";
         }
         if(project.getFromDate().getDayOfMonth() >= project.getToDate().getDayOfMonth()){
             attributes.addFlashAttribute("message","To date must be greater than  from date");
             return "redirect:/project/create";
         }
-        projectService.save(project);
-        Integer id = project.getId();
-        projectDetailCustom.delete(id);
+
         String[] staffIdArray = staffId.split(",");
         String[] positionArray = role.split(",");
-
+//
+        System.out.println(staffIdArray.length);
+        System.out.println(positionArray.length);
         int count=0;
         for(String i : positionArray){
             if (i.equals("PM")) {
@@ -113,7 +113,7 @@ public class ProjectController {
             }
         }
         if(count == 0 || count >=2){
-            attributes.addFlashAttribute("message","A project has only 1 PM");
+            attributes.addFlashAttribute("message","A project must has a PM");
             return "redirect:/project/create";
         }
         count=0;
@@ -122,11 +122,13 @@ public class ProjectController {
                 count++;
             }
         }
-        if(count == 0 || count >=2){
-            attributes.addFlashAttribute("message","A project has only 1 QA");
+        if(count == 0 || count >=2 ){
+            attributes.addFlashAttribute("message","A project must has a QA");
             return "redirect:/project/create";
         }
 
+        projectService.save(project);
+        Integer id = project.getId();
         List<ProjectDetail> projectDetailList = new ArrayList<>();
 
         for (int i = 0; i < staffIdArray.length; i++) {
@@ -148,10 +150,12 @@ public class ProjectController {
                 projectDetailList.add(projectDetail);
             }
         }
+
+//        projectDetailCustom.delete(id);
         for(ProjectDetail detail : projectDetailList){
             projectDetailService.save(detail);
         }
-
+//
         return "redirect:/project/list";
     }
 
@@ -166,9 +170,7 @@ public class ProjectController {
     @GetMapping("/project/edit")
     public String edit(@RequestParam("id") Integer id,Model model) {
         Project project = projectService.readOne(id);
-        List<StaffDTO> staffDTOS = projectDetailCustom.getObjects(id);
         model.addAttribute("project",project);
-        model.addAttribute("staffList", staffDTOS);
         return "project/create-project";
     }
 }

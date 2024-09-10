@@ -30,7 +30,7 @@ public class ProjectDetailCustomImpl implements ProjectDetailCustom{
         sql.append(" RIGHT JOIN Staff s ON s.staffId = p.staff_staffId");
         sql.append(" WHERE project_id =");
         sql.append( id);
-        sql.append(" OR project_id IS NULL");
+//        sql.append(" OR project_id IS NULL");
 
         result = manager.createNativeQuery(sql.toString()).getResultList();
 
@@ -42,6 +42,7 @@ public class ProjectDetailCustomImpl implements ProjectDetailCustom{
             dto.setStaffId((Integer) res[1]);
             dto.setPosition((String) res[2]);
             dto.setStaffName((String) res[3]);
+
 
             staffDTOList.add(dto);
         }

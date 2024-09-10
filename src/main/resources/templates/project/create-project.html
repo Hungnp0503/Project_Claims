@@ -37,55 +37,53 @@
             <span th:if="${#fields.hasErrors('toDate')}" th:errorclass="error" th:errors="*{toDate}"></span>
         </div>
 
-        <table class="table table-striped">
+        <table th:if="*{id == null}" class="table table-striped">
             <thead>
             <tr>
-                <th>Id</th>
                 <th>Position</th>
                 <th>Staff name</th>
             </tr>
             </thead>
             <tbody>
-            <tr th:each="staff : ${staffList}">
+            <tr>
                 <td>
-                    <input type="hidden" name="staffId" id="staffId" th:value="${staff.staffId}" >
-                    <span th:text="${staff.staffId}"></span>
-                </td>
-                <td>
-                    <select class="border-none" name="position" id="position">
-                        <option value="0" th:selected="${staff.position == null}" >Select-position</option>
-                        <option value="BA" th:selected="${staff.position == 'BA'}">BA</option>
-                        <option value="PM" th:selected="${staff.position == 'PM'}">PM</option>
-                        <option value="QA" th:selected="${staff.position == 'QA'}">QA</option>
-                        <option value="DEVELOPER" th:selected="${staff.position == 'DEVELOPER'}">DEVELOPER</option>
-                        <option value="TESTERS" th:selected="${staff.position == 'TESTERS'}">TESTERS</option>
-                        <option value="TECHNICAL_LEAD" th:selected="${staff.position == 'TECHNICAL_LEAD'}">TECHNICAL_LEAD</option>
-                        <option value="TECHNICAL_CONSULTANCY" th:selected="${staff.position == 'TECHNICAL_CONSULTANCY'}">TECHNICAL_CONSULTANCY</option>
+                    <select class="border-none" name="position">
+                        <option value="0">Select-position</option>
+                        <option value="BA">BA</option>
+                        <option value="PM">PM</option>
+                        <option value="QA">QA</option>
+                        <option value="DEVELOPER">DEVELOPER</option>
+                        <option value="TESTERS">TESTERS</option>
+                        <option value="TECHNICAL_LEAD">TECHNICAL_LEAD</option>
+                        <option value="TECHNICAL_CONSULTANCY">TECHNICAL_CONSULTANCY</option>
                     </select>
                 </td>
-                <td th:text="${staff.staffName}"></td>
+                <td>
+                    <select class="border-none" name="staffId">
+                        <option value="0">Select-name</option>
+                        <option th:each="staff : ${staffList}" th:value="${staff.staffId}" th:text="${staff.staffName}"></option>
+                    </select>
+                </td>
             </tr>
-<!--            <tr th:if="*{id != null}" th:each="detail : ${detailList}">-->
-<!--                <td>-->
-<!--                    <input type="hidden" name="staffId" id="staffId1" th:value="${detail.staffId}" >-->
-<!--                    <span th:text="${detail.staffId}"></span>-->
-<!--                </td>-->
-<!--                <td>-->
-<!--                    <select class="border-none" name="position" id="position1">-->
-<!--                        <option value="0" th:selected="${detail.position == null}" >Select-position</option>-->
-<!--                        <option value="BA" th:selected="${detail.position == 'BA'}">BA</option>-->
-<!--                        <option value="PM" th:selected="${detail.position == 'PM'}">PM</option>-->
-<!--                        <option value="QA" th:selected="${detail.position == 'QA'}">QA</option>-->
-<!--                        <option value="DEVELOPER" th:selected="${detail.position == 'DEVELOPER'}">DEVELOPER</option>-->
-<!--                        <option value="TESTERS" th:selected="${detail.position == 'TESTERS'}">TESTERS</option>-->
-<!--                        <option value="TECHNICAL_LEAD" th:selected="${detail.position == 'TECHNICAL_LEAD'}">TECHNICAL_LEAD</option>-->
-<!--                        <option value="TECHNICAL_CONSULTANCY" th:selected="${detail.position == 'TECHNICAL_CONSULTANCY'}">TECHNICAL_CONSULTANCY</option>-->
-<!--                    </select>-->
-<!--                </td>-->
-<!--                <td th:text="${detail.staffName}"></td>-->
-<!--            </tr>-->
             </tbody>
+            <button type="button" class="btn btn-success float-right addRow">+</button>
+            <input type="hidden" name="contextPath" th:value="@{/}"/>
         </table>
+        <table th:if="*{id != null}" id="staffTable" class="table table-striped">
+            <thead>
+            <tr>
+                <th>Position</th>
+                <th>Staff name</th>
+            </tr>
+            </thead>
+            <tbody>
+
+            </tbody>
+            <button type="button" class="btn btn-success float-right addRow">+</button>
+            <input type="hidden" name="contextPath" th:value="@{/}"/>
+        </table>
+
+
 
         <div class="form-group float-right">
             <button type="submit" class="btn btn-success "><i class="fa-regular fa-floppy-disk"></i> Save</button>
@@ -96,5 +94,6 @@
 
     </form>
 </main>
+
 </body>
 </html>
