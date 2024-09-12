@@ -83,9 +83,6 @@ public class CreateClaimsController {
                              HttpServletRequest request,
                              HttpSession session){
         Integer projectid = Integer.parseInt(id);
-        // Lưu dữ liệu vào database
-        Staff staff = (Staff) session.getAttribute("staffSesion");
-        claims.setStaff(staff);
         claims.setProject(projectReponsitory.findById(projectid).get());
         List<ClaimsDetails> days = new ArrayList<>();
         int dayIndex = 0;

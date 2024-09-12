@@ -41,8 +41,8 @@ public class UpdateController {
     ) {
        Integer idClaims = Integer.valueOf(id);
 
-       Claims claim = claimsRepository.findById(idClaims).orElse(null);
-        List<ProjectDetail> projectDetails = projectDetailReponsitory.findByProjectDetailKeyStaffId(claim.getProject().getId());
+       Optional<Claims> claim = claimsRepository.findById(idClaims);
+        List<ProjectDetail> projectDetails = projectDetailReponsitory.findByProjectDetailKeyStaffId(claim.get().getStaff().getId());
         List<Integer> ids = new ArrayList<>();
 
         for (ProjectDetail projectDetail : projectDetails) {
@@ -60,9 +60,9 @@ public class UpdateController {
         model.addAttribute("projects",projects);
         model.addAttribute("projectRoles", projectRoles);
 
-        Project selectedProject = projectReponsitory.findById(claim.getProject().getId()).orElse(null);
-        model.addAttribute("claims",claim);
-        model.addAttribute("selectedProject", selectedProject);
+        Optional<Project> selectedProject = projectReponsitory.findById(claim.get().getProject().getId());
+        model.addAttribute("claims",claim.get());
+        model.addAttribute("selectedProject", selectedProject.get());
         return "claims/createClaims";
     }
 
@@ -71,10 +71,10 @@ public class UpdateController {
                          Model model,
                          RedirectAttributes redirectAttributes
     ) {
-        Optional<Claims> claim = claimsRepository.findById(id);
-        if(claim.isPresent()) {
+      Optional<Claims> claim = claimsRepository.findById(id);
+
             claimsRepository.delete(claim.get());
-        }
+
         redirectAttributes.addFlashAttribute("Delete successful");
         return "redirect:/claims/view";
     }

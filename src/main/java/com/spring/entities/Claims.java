@@ -33,5 +33,4 @@ public class Claims {
     @JoinColumn(name = "claim_id")
     private List<ClaimsDetails> claimDays = new ArrayList<>();
 
-
 }
