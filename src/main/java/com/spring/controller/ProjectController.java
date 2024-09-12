@@ -91,8 +91,6 @@ public class ProjectController {
             Model model,
             RedirectAttributes attributes) {
 
-        List<StaffDTO> staffDTOS = projectDetailCustom.getStaffNull();
-        model.addAttribute("staffList", staffDTOS);
         if (bindingResult.hasErrors()) {
             return "redirect:/project/create";
         }

@@ -49,13 +49,14 @@ $(document).ready(function() {
 
 
 
-    $('#position').change(function() {
+    $("select[name='position']").on('change', function() {
         updatePositionOptions();
-    })
+    });
 
-    $('#staffName').change(function() {
+// Lắng nghe sự kiện thay đổi trên tất cả các thẻ <select> staffId
+    $("select[name='staffId']").on('change', function() {
         updateSelectOptions();
-    })
+    });
 
     $('.addRow').click(function() {
         const table = document.querySelector(".table");
@@ -67,6 +68,7 @@ $(document).ready(function() {
         const positionSelect = document.createElement("select");
         positionSelect.name = "position";
         positionSelect.classList.add("border-none");
+        positionSelect.onchange = updatePositionOptions;
 
         const positionOptions = ["Select-position", "BA", "PM", "QA", "DEVELOPER", "TESTERS", "TECHNICAL_LEAD", "TECHNICAL_CONSULTANCY"];
         positionOptions.forEach(pos => {
@@ -83,6 +85,7 @@ $(document).ready(function() {
         const staffSelect = document.createElement("select");
         staffSelect.name = "staffId";
         staffSelect.classList.add("border-none");
+        staffSelect.onchange = updateSelectOptions;
 
         const defaultOption = document.createElement("option");
         defaultOption.value = "0";
