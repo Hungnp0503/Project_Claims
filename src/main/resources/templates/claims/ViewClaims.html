@@ -16,20 +16,20 @@
 <body>
 <main class="col-md-9">
     <div class="container mt-5">
-        <h1 class="text-center">Danh Sách Yêu Cầu Bồi Thường</h1>
+        <h1 class="text-center">View Claims</h1>
 
         <!-- Các nút lọc trạng thái -->
         <div class="btn-group mb-4" role="group" aria-label="Filter Buttons">
             <a th:href="@{/claims/view?status=All}"
-               class="btn btn-secondary" th:classappend="${status == 'All'} ? 'active' : ''">Tất cả</a>
+               class="btn btn-secondary" th:classappend="${status == 'All'} ? 'active' : ''">All</a>
             <a th:href="@{/claims/view?status=Draft}"
-               class="btn btn-secondary" th:classappend="${status == 'Draft'} ? 'active' : ''">Bản Nháp</a>
+               class="btn btn-secondary" th:classappend="${status == 'Draft'} ? 'active' : ''">Draft</a>
             <a th:href="@{/claims/view?status=Pending_Approval}"
-               class="btn btn-secondary" th:classappend="${status == 'Pending_Approval'} ? 'active' : ''">Chờ Duyệt</a>
+               class="btn btn-secondary" th:classappend="${status == 'Pending_Approval'} ? 'active' : ''">Pending Approval</a>
             <a th:href="@{/claims/view?status=Approved}"
-               class="btn btn-secondary" th:classappend="${status == 'Approved'} ? 'active' : ''">Đã Duyệt</a>
+               class="btn btn-secondary" th:classappend="${status == 'Approved'} ? 'active' : ''">Approved</a>
             <a th:href="@{/claims/view?status=Rejected}"
-               class="btn btn-secondary" th:classappend="${status == 'Rejected'} ? 'active' : ''">Bị Từ Chối</a>
+               class="btn btn-secondary" th:classappend="${status == 'Rejected'} ? 'active' : ''">Rejected</a>
         </div>
 
         <!-- Bảng hiển thị yêu cầu bồi thường -->
@@ -38,36 +38,36 @@
             <tr>
                 <th>
                     <a th:href="@{/claims/view(sort='id', direction=${sort == 'id' and direction == 'asc' ? 'desc' : 'asc'}, status=${status})}">
-                        ID
+                        Claim ID
                         <span th:if="${sort == 'id'}" th:text="${direction == 'asc' ? '↑' : '↓'}"></span>
                     </a>
                 </th>
                 <th>
                     <a th:href="@{/claims/view(sort='staff.staffName', direction=${sort == 'staff.staffName' and direction == 'asc' ? 'desc' : 'asc'}, status=${status})}">
-                        Tên Nhân Viên
+                        Staff Name
                         <span th:if="${sort == 'staff.staffName'}" th:text="${direction == 'asc' ? '↑' : '↓'}"></span>
                     </a>
                 </th>
                 <th>
                     <a th:href="@{/claims/view(sort='project.projectName', direction=${sort == 'project.projectName' and direction == 'asc' ? 'desc' : 'asc'}, status=${status})}">
-                        Tên Dự Án
+                        Project Name
                         <span th:if="${sort == 'project.projectName'}" th:text="${direction == 'asc' ? '↑' : '↓'}"></span>
                     </a>
                 </th>
                 <th>
                     <a th:href="@{/claims/view(sort='date', direction=${sort == 'date' and direction == 'asc' ? 'desc' : 'asc'}, status=${status})}">
-                        Ngày
+                        Project Duration
                         <span th:if="${sort == 'date'}" th:text="${direction == 'asc' ? '↑' : '↓'}"></span>
                     </a>
                 </th>
 
                 <th>
                     <a th:href="@{/claims/view(sort='status', direction=${sort == 'status' and direction == 'asc' ? 'desc' : 'asc'}, status=${status})}">
-                        Trạng Thái
+                        Status
                         <span th:if="${sort == 'status'}" th:text="${direction == 'asc' ? '↑' : '↓'}"></span>
                     </a>
                 </th>
-                <th>Hành Động</th>
+                <th>Actor</th>
             </tr>
             </thead>
             <tbody>
