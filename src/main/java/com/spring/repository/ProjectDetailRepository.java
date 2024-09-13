@@ -14,5 +14,7 @@ public interface ProjectDetailRepository extends JpaRepository<ProjectDetail, Pr
 
 
     ProjectDetail findByProjectIdAndRoleProject(Integer projectId,String role);
+    List<ProjectDetail> findByProjectDetailKeyStaffId(Integer staffId);
+    ProjectDetail findByProjectDetailKey(ProjectDetailKey projectDetailKey);
 
 }

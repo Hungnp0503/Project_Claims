@@ -3,31 +3,20 @@ package com.spring.entities;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
+import lombok.ToString;
 
-import java.time.LocalDate;
-import java.time.LocalTime;
+import java.util.*;
+
 
 @Entity
 @Getter
 @Setter
+@ToString
 public class Claims {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
-
-    @Temporal(TemporalType.DATE)
-    private LocalDate date;
-
-    private String day;
-
-    @Temporal(TemporalType.TIME)
-    private LocalTime fromDate;
-
-    @Temporal(TemporalType.TIME)
-    private LocalTime toDate;
-
-    private Double totalOfHours;
 
     @Enumerated(EnumType.STRING)
     private Status status;
@@ -40,5 +29,8 @@ public class Claims {
     @JoinColumn(name = "project_id")
     private Project project;
 
+    @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
+    @JoinColumn(name = "claim_id")
+    private List<ClaimsDetails> claimDays = new ArrayList<>();
 
 }

@@ -14,4 +14,7 @@ public interface StaffRepository extends JpaRepository<Staff,Integer> {
 
     @Query(value = "SELECT s FROM Staff s WHERE s.roleStaff='USER' AND s.staffName LIKE :search OR s.department LIKE :search OR s.jobRank LIKE :search OR s.email LIKE :search")
     Page<Staff> findByStaffNameOrDepartmentOrJobRankOrEmail(@Param("search") String search, Pageable pageable);
+
+    Staff findByEmail(String email);
+    Staff findByStaffName(String staffName);
 }
