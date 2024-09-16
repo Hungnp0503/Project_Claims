@@ -11,6 +11,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -25,6 +26,8 @@ import java.util.List;
 
 @Controller
 public class StaffController {
+    @Autowired
+    PasswordEncoder passwordEncoder;
 
     @Autowired
     StaffRepository staffRepository;
@@ -71,6 +74,9 @@ public class StaffController {
         if(bindingResult.hasErrors()){
             return "staff/staffCreate";
         }
+        String rawPassword = staff.getPassword();
+        String encryptPassword = passwordEncoder.encode(rawPassword);
+        staff.setPassword(encryptPassword);
         staff.setRoleStaff(RoleStaff.USER);
         staffRepository.save(staff);
         attributes.addFlashAttribute("message", "Changes about staff have been updated");

@@ -33,7 +33,7 @@ public class ViewClaimsController {
 
     @Autowired
     private ClaimsService claimsService = new ClaimsServiceImple();
-    @GetMapping("/claims/view")
+    @GetMapping(value ={"/claims/view","/"})
     public String viewClaims(@RequestParam(defaultValue = "0") int page,
                              @RequestParam(defaultValue = "5") int size,
                              @RequestParam(defaultValue = "All") String status,
