@@ -9,56 +9,7 @@
     <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
-    <script>
-        function confirmApproval(claimId) {
-            if (confirm("Are you sure you want to approve this claim?")) {
-                window.location.href = '/claims-requests/approve/' + claimId;
-            }
-        }
 
-        function confirmRejection(claimId) {
-            if (confirm("Are you sure you want to reject this claim?")) {
-                window.location.href = '/claims-requests/reject/' + claimId;
-            }
-        }
-
-        function confirmPaid(claimId) {
-            if (confirm("Are you sure you want to mark this claim as paid?")) {
-                window.location.href = '/claims-requests/pay/' + claimId;
-            }
-        }
-
-        function confirmMultiplePaid() {
-            const selectedClaims = Array.from(document.querySelectorAll('input[name="claimIds"]:checked')).map(el => el.value);
-            if (selectedClaims.length === 0) {
-                alert("No claims selected.");
-                return;
-            }
-            if (confirm("Are you sure you want to mark the selected claims as paid?")) {
-                window.location.href = '/claims-requests/pay-multiple/' + selectedClaims.join(',');
-            }
-        }
-
-        function confirmCancellation(claimId) {
-            if (confirm("Are you sure you want to cancel this claim?")) {
-                window.location.href = '/claims-requests/cancel/' + claimId;
-            }
-        }
-
-        function confirmDownload() {
-            const selectedClaims = Array.from(document.querySelectorAll('input[name="claimIds"]:checked')).map(el => el.value);
-
-            if (selectedClaims.length === 0) {
-                alert("No claims selected.");
-                return;
-            }
-
-            if (confirm("Are you sure you want to download the selected claims?")) {
-                const encodedIds = encodeURIComponent(selectedClaims.join(','));
-                window.location.href = `/claims-requests/download?ids=${encodedIds}`;
-            }
-        }
-    </script>
 </head>
 <body>
 <main class="container mt-4">
@@ -113,6 +64,56 @@
             </tr>
             </tbody>
         </table>
+    <script>
+        function confirmApproval(claimId) {
+            if (confirm("Are you sure you want to approve this claim?")) {
+                window.location.href = '/claims-requests/approve/' + claimId;
+            }
+        }
+
+        function confirmRejection(claimId) {
+            if (confirm("Are you sure you want to reject this claim?")) {
+                window.location.href = '/claims-requests/reject/' + claimId;
+            }
+        }
+
+        function confirmPaid(claimId) {
+            if (confirm("Are you sure you want to mark this claim as paid?")) {
+                window.location.href = '/claims-requests/pay/' + claimId;
+            }
+        }
+
+        function confirmMultiplePaid() {
+            const selectedClaims = Array.from(document.querySelectorAll('input[name="claimIds"]:checked')).map(el => el.value);
+            if (selectedClaims.length === 0) {
+                alert("No claims selected.");
+                return;
+            }
+            if (confirm("Are you sure you want to mark the selected claims as paid?")) {
+                window.location.href = '/claims-requests/pay-multiple/' + selectedClaims.join(',');
+            }
+        }
+
+        function confirmCancellation(claimId) {
+            if (confirm("Are you sure you want to cancel this claim?")) {
+                window.location.href = '/claims-requests/cancel/' + claimId;
+            }
+        }
+
+        function confirmDownload() {
+            const selectedClaims = Array.from(document.querySelectorAll('input[name="claimIds"]:checked')).map(el => el.value);
+
+            if (selectedClaims.length === 0) {
+                alert("No claims selected.");
+                return;
+            }
+
+            if (confirm("Are you sure you want to download the selected claims?")) {
+                const encodedIds = encodeURIComponent(selectedClaims.join(','));
+                window.location.href = `/claims-requests/download?ids=${encodedIds}`;
+            }
+        }
+    </script>
 </main>
 
 </body>
