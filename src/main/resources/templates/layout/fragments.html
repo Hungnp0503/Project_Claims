@@ -15,7 +15,6 @@
                 <div id="user" class="user p-2">
                     <i class="fa-solid fa-user fa-2x"></i><span class="caret"></span>
                     <ul class="user-list">
-                        <li id="userprofile"><i class="fa-solid fa-user"></i><a href="#">Information</a> </li>
                         <li id="logout"><a href="#"><i class="fa-solid fa-right-from-bracket"></i> Log out</a></li>
                     </ul>
                 </div>
@@ -30,19 +29,19 @@
         <ul class="navbar-nav ">
 
             <li class="nav-item ">
-                <a class="nav-link text-white h3" href="#">My claims</a>
+                <a class="nav-link text-white h3" th:href="@{/claims/view}">My claims</a>
             </li>
 
             <li class="nav-item">
-                <a class="nav-link text-white h3" href="#">Project Information</a>
+                <a class="nav-link text-white h3" th:href="@{/project/list}">Project Information</a>
             </li>
 
             <li class="nav-item">
-                <a class="nav-link text-white h3" href="#">Staff Information</a>
+                <a class="nav-link text-white h3" th:href="@{/staff/list}">Staff Information</a>
             </li>
 
             <li class="nav-item">
-                <a class="nav-link text-white h3" href="/claims-requests">Claims request</a>
+                <a class="nav-link text-white h3" href="#">Claims request</a>
             </li>
 
         </ul>

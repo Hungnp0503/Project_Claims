@@ -1,5 +1,6 @@
 <!DOCTYPE html>
-<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<html xmlns:th="http://www.thymeleaf.org"
+      th:replace="~{layout/template::areas('claims-request',~{::main})}">
 <head>
     <meta charset="UTF-8">
     <title>Claims Requests</title>
@@ -60,58 +61,59 @@
     </script>
 </head>
 <body>
-<div class="container mt-4">
-    <h2>Claims Requests</h2>
-    <button type="button" class="btn btn-primary mb-3" onclick="confirmDownload()">Download Selected Claims</button>
-    <button type="button" class="btn btn-success mb-3" onclick="confirmMultiplePaid()">Mark Selected as Paid</button>
-    <table class="table table-bordered">
-        <thead>
-        <tr>
-            <th>Select</th>
-            <th>ID</th>
-            <th>Status</th>
-            <th>Date</th>
-            <th>Actions</th>
-        </tr>
-        </thead>
-        <tbody>
-        <tr th:each="claim : ${claims}">
-            <td>
-                <input type="checkbox" name="claimIds" th:value="${claim.id}">
-            </td>
-            <td th:text="${claim.id}"></td>
-            <td th:text="${claim.status}"></td>
-            <td th:text="${claim.date}"></td>
-            <td>
-                <button th:if="${claim.status == 'Pending approval'}"
-                        type="button"
-                        class="btn btn-success btn-sm"
-                        th:attr="onclick='confirmApproval(' + ${claim.id} + ')'">
-                    Approve
-                </button>
-                <button th:if="${claim.status == 'Pending approval'}"
-                        type="button"
-                        class="btn btn-danger btn-sm"
-                        th:attr="onclick='confirmRejection(' + ${claim.id} + ')'">
-                    Reject
-                </button>
-                <button th:if="${claim.status == 'Approved'}"
-                        type="button"
-                        class="btn btn-info btn-sm"
-                        th:attr="onclick='confirmPaid(' + ${claim.id} + ')'">
-                    Paid
-                </button>
-                <button th:if="${claim.status == 'Draft'}"
-                        type="button"
-                        class="btn btn-warning btn-sm"
-                        th:onclick="'confirmCancellation(' + ${claim.id} + ')'">
-                    Cancel
-                </button>
-                <a th:href="@{/claims-requests/{id}(id=${claim.id})}" class="btn btn-primary btn-sm">View</a>
-            </td>
-        </tr>
-        </tbody>
-    </table>
-</div>
+<main class="container mt-4">
+        <h2>Claims Requests</h2>
+        <button type="button" class="btn btn-primary mb-3" onclick="confirmDownload()">Download Selected Claims</button>
+        <button type="button" class="btn btn-success mb-3" onclick="confirmMultiplePaid()">Mark Selected as Paid</button>
+        <table class="table table-bordered">
+            <thead>
+            <tr>
+                <th>Select</th>
+                <th>ID</th>
+                <th>Status</th>
+                <th>Date</th>
+                <th>Actions</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr th:each="claim : ${claims}">
+                <td>
+                    <input type="checkbox" name="claimIds" th:value="${claim.id}">
+                </td>
+                <td th:text="${claim.id}"></td>
+                <td th:text="${claim.status}"></td>
+                <td th:text="${claim.date}"></td>
+                <td>
+                    <button th:if="${claim.status == 'Pending approval'}"
+                            type="button"
+                            class="btn btn-success btn-sm"
+                            th:attr="onclick='confirmApproval(' + ${claim.id} + ')'">
+                        Approve
+                    </button>
+                    <button th:if="${claim.status == 'Pending approval'}"
+                            type="button"
+                            class="btn btn-danger btn-sm"
+                            th:attr="onclick='confirmRejection(' + ${claim.id} + ')'">
+                        Reject
+                    </button>
+                    <button th:if="${claim.status == 'Approved'}"
+                            type="button"
+                            class="btn btn-info btn-sm"
+                            th:attr="onclick='confirmPaid(' + ${claim.id} + ')'">
+                        Paid
+                    </button>
+                    <button th:if="${claim.status == 'Draft'}"
+                            type="button"
+                            class="btn btn-warning btn-sm"
+                            th:onclick="'confirmCancellation(' + ${claim.id} + ')'">
+                        Cancel
+                    </button>
+                    <a th:href="@{/claims-requests/{id}(id=${claim.id})}" class="btn btn-primary btn-sm">View</a>
+                </td>
+            </tr>
+            </tbody>
+        </table>
+</main>
+
 </body>
 </html>
