@@ -1,4 +1,4 @@
-package com.spring.service;
+package com.spring.sevices;
 
 import com.spring.entities.Claims;
 import com.spring.repository.ClaimsRepository;
@@ -8,7 +8,7 @@ import org.springframework.stereotype.Repository;
 import java.util.List;
 
 @Repository
-public class ClaimsServiceImple implements ClaimsService{
+public class ClaimsServiceImple implements ClaimsService {
     @Autowired
     private ClaimsRepository claimsRepository;
     @Override

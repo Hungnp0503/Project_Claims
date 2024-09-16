@@ -2,13 +2,16 @@ package com.spring;
 
 import com.spring.dto.StaffDTO;
 import com.spring.entities.ProjectDetail;
+import com.spring.entities.Staff;
 import com.spring.repository.ProjectDetailCustom;
+import com.spring.repository.StaffRepository;
 import com.spring.sevices.EmailService;
 import com.spring.sevices.ProjectDetailService;
 import jakarta.mail.MessagingException;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.thymeleaf.context.Context;
 
 import java.util.List;
@@ -18,12 +21,14 @@ class ClaimsApplicationTests {
 
 	private final ProjectDetailService projectDetailService;
 	private final ProjectDetailCustom custom;
+	private final StaffRepository staffRepository;
 	private final EmailService emailService;
 
 	@Autowired
-    ClaimsApplicationTests(ProjectDetailService projectDetailService, ProjectDetailCustom custom, EmailService emailService) {
+    ClaimsApplicationTests(ProjectDetailService projectDetailService, ProjectDetailCustom custom, StaffRepository staffRepository, EmailService emailService) {
         this.projectDetailService = projectDetailService;
         this.custom = custom;
+        this.staffRepository = staffRepository;
         this.emailService = emailService;
     }
 
@@ -39,10 +44,8 @@ class ClaimsApplicationTests {
 
 	@Test
 	void contextLoads1() {
-		List<StaffDTO> resulft = custom.getObjects(27);
-		for(StaffDTO res : resulft){
-			System.out.println(res);
-		}
+		Staff staff = staffRepository.findByEmail("admin@gmail.com");
+		System.out.println(staff.getEmail());
 	}
 
 }

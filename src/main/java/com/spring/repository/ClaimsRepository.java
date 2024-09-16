@@ -17,7 +17,10 @@ public interface ClaimsRepository extends JpaRepository<Claims,Integer> {
     List<Claims> findPendingApprovalClaims();
 
     Page<Claims> findByStatus (Status status, Pageable pageable);
-    List<Claims> findAllByOrderByStaff_StaffNameAsc();
+
     Optional<Claims> findById(Integer id);
+
+    Page<Claims> findAllByStaffStaffId(Integer staffId,Pageable pageable);
+    Page<Claims> findAllByStaffStaffIdAndStatus(Integer staffId,Status status,Pageable pageable);
 
 }

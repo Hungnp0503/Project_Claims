@@ -6,6 +6,7 @@ import com.spring.repository.ClaimsRepository;
 import com.spring.repository.ProjectDetailRepository;
 import com.spring.repository.ProjectRepository;
 import com.spring.repository.StaffRepository;
+import com.spring.sevices.AuthServices;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -30,6 +31,9 @@ public class CreateClaimsController {
     private ProjectRepository projectReponsitory;
 
     @Autowired
+    AuthServices authServices;
+
+    @Autowired
     private StaffRepository staffReponsitory;
 
     @Autowired
@@ -41,18 +45,16 @@ public class CreateClaimsController {
     @GetMapping("/createClaims")
     public String claimsPage( Model model, HttpSession session
                              ) {
-        // Lấy dữ liệu từ database và truyền vào view
-        String email ="staff1@gmail.com";
-        Staff staff = staffReponsitory.findByEmail(email);
+        Staff staff = authServices.getCurrentUser().getStaffDb();
         if(staff!=null){
            Claims claim = new Claims();
             if (claim.getClaimDays() == null || claim.getClaimDays().isEmpty()) {
                 claim.setClaimDays(new ArrayList<>());
                 claim.getClaimDays().add(new ClaimsDetails()); // Thêm 1 hàng trống ban đầu
             }
-           claim.setStaff(staff);
+            claim.setStaff(staff);
             model.addAttribute("claims", claim);
-            session.setAttribute("staffSesion",staff);
+
             List<ProjectDetail> projectDetails = projectDetailReponsitory.findByProjectDetailKeyStaffId(staff.getStaffId());
             List<Integer> ids = new ArrayList<>();
 

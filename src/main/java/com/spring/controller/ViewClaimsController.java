@@ -1,10 +1,12 @@
 package com.spring.controller;
 
 import com.spring.entities.Claims;
+import com.spring.entities.Staff;
 import com.spring.entities.Status;
 import com.spring.repository.*;
-import com.spring.service.ClaimsService;
-import com.spring.service.ClaimsServiceImple;
+import com.spring.sevices.AuthServices;
+import com.spring.sevices.ClaimsService;
+import com.spring.sevices.ClaimsServiceImple;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -19,14 +21,9 @@ import java.util.List;
 
 @Controller
 public class ViewClaimsController {
-    @Autowired
-    private ProjectRepository projectReponsitory;
 
     @Autowired
-    private StaffRepository staffReponsitory;
-
-    @Autowired
-    private ProjectDetailRepository projectDetailReponsitory;
+    AuthServices authServices;
 
     @Autowired
     private ClaimsRepository claimsRepository;
@@ -40,15 +37,16 @@ public class ViewClaimsController {
                              @RequestParam(defaultValue = "id") String sort,
                              @RequestParam(defaultValue = "asc") String direction,
                              Model model) {
+        Staff staff = authServices.getCurrentUser().getStaffDb();
         Sort.Direction sortDirection = direction.equalsIgnoreCase("asc") ? Sort.Direction.ASC : Sort.Direction.DESC;
         Pageable pageable = PageRequest.of(page, size,Sort.by(sortDirection,sort));
 
         Page<Claims> claimsPage;
 
         if ("All".equals(status)) {
-            claimsPage = claimsRepository.findAll(pageable);
+            claimsPage = claimsRepository.findAllByStaffStaffId(staff.getStaffId(),pageable);
         } else {
-            claimsPage = claimsRepository.findByStatus(Status.valueOf(status), pageable);
+            claimsPage = claimsRepository.findAllByStaffStaffIdAndStatus(staff.getStaffId(), Status.valueOf(status), pageable);
         }
 
         model.addAttribute("claimsPage", claimsPage);

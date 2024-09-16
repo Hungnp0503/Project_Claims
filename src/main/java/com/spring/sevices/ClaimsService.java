@@ -1,4 +1,4 @@
-package com.spring.service;
+package com.spring.sevices;
 
 import com.spring.entities.Claims;
 
