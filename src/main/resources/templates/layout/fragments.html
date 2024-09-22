@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.w3.org/1999/xhtml">
 <head>
     <meta charset="UTF-8">
     <title>Title</title>
@@ -33,11 +33,11 @@
             </li>
 
             <li class="nav-item">
-                <a class="nav-link text-white h3" th:href="@{/project/list}">Project Information</a>
+                <a  sec:authorize="hasAuthority('ADMIN')" class="nav-link text-white h3" th:href="@{/project/list}">Project Information</a>
             </li>
 
             <li class="nav-item">
-                <a class="nav-link text-white h3" th:href="@{/staff/list}">Staff Information</a>
+                <a  sec:authorize="hasAuthority('ADMIN')" class="nav-link text-white h3" th:href="@{/staff/list}">Staff Information</a>
             </li>
 
             <li class="nav-item">
