@@ -5,6 +5,7 @@ import lombok.Data;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
+import org.hibernate.annotations.CreationTimestamp;
 
 import java.time.LocalDate;
 import java.util.*;
@@ -25,6 +26,7 @@ public class Claims {
     private Status status;
 
     @Temporal(TemporalType.DATE)
+    @CreationTimestamp
     private LocalDate date;
 
     @ManyToOne

@@ -15,8 +15,8 @@ public class AppConfig implements WebMvcConfigurer {
 
     @Override
     public void addResourceHandlers(ResourceHandlerRegistry registry) {
-
-        registry.addResourceHandler("/image/**").addResourceLocations("classpath:/image/");
+        registry.addResourceHandler("/image/**")
+                .addResourceLocations("classpath:/image/");
 
         registry.addResourceHandler("/css/**")
                 .addResourceLocations("classpath:/static/css/")
@@ -29,12 +29,12 @@ public class AppConfig implements WebMvcConfigurer {
                 .resourceChain(true);
     }
 
-
     @Bean
-    public MessageSource messageSource() {
+    public MessageSource messageSource(){
         ReloadableResourceBundleMessageSource messageSource = new ReloadableResourceBundleMessageSource();
         messageSource.setBasename("classpath:/i18n/message_validation");
         messageSource.setDefaultEncoding(StandardCharsets.UTF_8.name());
         return messageSource;
     }
+
 }

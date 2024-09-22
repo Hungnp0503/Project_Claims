@@ -53,7 +53,6 @@ $(document).ready(function() {
         updatePositionOptions();
     });
 
-// Lắng nghe sự kiện thay đổi trên tất cả các thẻ <select> staffId
     $("select[name='staffId']").on('change', function() {
         updateSelectOptions();
     });

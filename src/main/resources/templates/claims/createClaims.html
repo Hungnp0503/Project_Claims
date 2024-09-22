@@ -12,6 +12,7 @@
 </head>
 <body>
 <main class="col-md-9">
+    <link rel="stylesheet" th:href="@{/css/createClaimsCSS.css}">
     <form th:action="@{/claims/save}" method="post" th:object="${claims}">
         <input type="hidden" name="id" th:field="*{id}">
         <div class="container1">

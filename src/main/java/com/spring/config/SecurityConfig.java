@@ -32,7 +32,7 @@ public class SecurityConfig {
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
         http
-                .csrf().disable()
+                .csrf(Customizer.withDefaults())
                 .authorizeHttpRequests(authorize -> authorize
                         .requestMatchers(PERMIT_ALL_LINK).permitAll()
                         .requestMatchers(ADMIN_PERMIT_LINK).hasAuthority("ADMIN")

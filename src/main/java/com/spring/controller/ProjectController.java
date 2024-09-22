@@ -10,6 +10,7 @@ import com.spring.repository.ProjectRepository;
 import com.spring.sevices.ProjectDetailService;
 import com.spring.sevices.ProjectService;
 import com.spring.validation.CreateGroup;
+import com.spring.validation.UpdateGroup;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -82,17 +83,16 @@ public class ProjectController {
 
     @PostMapping("/project/save")
     public String saveProject(
-            @Validated(CreateGroup.class)
+            @Validated({CreateGroup.class, UpdateGroup.class})
             @ModelAttribute("project")
             Project project,
             BindingResult bindingResult,
             @RequestParam("staffId") String staffId,
             @RequestParam("position") String role,
-            Model model,
             RedirectAttributes attributes) {
 
         if (bindingResult.hasErrors()) {
-            return "redirect:/project/create";
+            return "project/create-project";
         }
         if(project.getFromDate().getDayOfMonth() >= project.getToDate().getDayOfMonth()){
             attributes.addFlashAttribute("message","To date must be greater than  from date");
@@ -101,9 +101,7 @@ public class ProjectController {
 
         String[] staffIdArray = staffId.split(",");
         String[] positionArray = role.split(",");
-//
-        System.out.println(staffIdArray.length);
-        System.out.println(positionArray.length);
+
         int count=0;
         for(String i : positionArray){
             if (i.equals("PM")) {

@@ -8,33 +8,31 @@
 
 <main class="col-md-9">
     <h1>Project Information</h1>
-    <div th:if="${message != null}">
-        <span class="col-md-12 alert alert-danger float-right" th:text="${message}"></span>
-    </div>
+    <span th:if="${message}" class="col-md-12 alert alert-danger float-right" th:text="${message}"></span>
     <form th:action="@{/project/save}" method="post" th:object="${project}">
         <input type="hidden" name="id" th:field="*{id}">
         <div class="form-group">
             <label for="projectName">Project name:</label>
             <input type="text" class="form-control" id="projectName" placeholder="Enter project name" name="projectName"  th:field="*{projectName}">
-            <span th:if="${#fields.hasErrors('projectName')}" th:errorclass="error" th:errors="*{projectName}"></span>
+            <span class="text-danger" th:if="${#fields.hasErrors('projectName')}" th:errorclass="error" th:errors="*{projectName}"></span>
         </div>
 
         <div class="form-group">
             <label for="projectName">Project code:</label>
             <input type="text" class="form-control" id="projectCode" placeholder="Enter project code" name="projectCode" th:field="*{projectCode}">
-            <span th:if="${#fields.hasErrors('projectCode')}" th:errorclass="error" th:errors="*{projectCode}"></span>
+            <span class="text-danger" th:if="${#fields.hasErrors('projectCode')}" th:errorclass="error" th:errors="*{projectCode}"></span>
         </div>
 
         <div class="form-group">
             <label for="fromDate">From date:</label>
             <input type="date" class="form-control" id="fromDate"  name="fromDate" th:field="*{fromDate}">
-            <span th:if="${#fields.hasErrors('fromDate')}" th:errorclass="error" th:errors="*{fromDate}"></span>
+            <span class="text-danger" th:if="${#fields.hasErrors('fromDate')}" th:errorclass="error" th:errors="*{fromDate}"></span>
         </div>
 
         <div class="form-group">
             <label for="toDate">To date:</label>
             <input type="date" class="form-control" id="toDate"  name="toDate" th:field="*{toDate}">
-            <span th:if="${#fields.hasErrors('toDate')}" th:errorclass="error" th:errors="*{toDate}"></span>
+            <span class="text-danger" th:if="${#fields.hasErrors('toDate')}" th:errorclass="error" th:errors="*{toDate}"></span>
         </div>
 
         <table th:if="*{id == null}" class="table table-striped">
