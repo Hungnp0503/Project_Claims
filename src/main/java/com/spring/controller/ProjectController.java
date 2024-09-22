@@ -92,7 +92,7 @@ public class ProjectController {
             RedirectAttributes attributes) {
 
         if (bindingResult.hasErrors()) {
-            return "redirect:/project/create";
+            return "project/create-project";
         }
         if(project.getFromDate().getDayOfMonth() >= project.getToDate().getDayOfMonth()){
             attributes.addFlashAttribute("message","To date must be greater than  from date");
