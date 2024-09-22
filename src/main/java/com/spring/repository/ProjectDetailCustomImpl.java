@@ -62,7 +62,7 @@ public class ProjectDetailCustomImpl implements ProjectDetailCustom{
         sql.append(" staffName");
         sql.append(" FROM ProjectDetail p");
         sql.append(" RIGHT JOIN Staff s ON s.staffId = p.staff_staffId");
-        sql.append(" WHERE project_id IS NULL");
+        sql.append(" WHERE project_id IS NULL AND roleStaff = 'USER'");
 
         result = manager.createNativeQuery(sql.toString()).getResultList();
         List<StaffDTO> staffDTOList = new ArrayList<>();

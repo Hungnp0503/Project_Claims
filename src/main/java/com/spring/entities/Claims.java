@@ -1,10 +1,12 @@
 package com.spring.entities;
 
 import jakarta.persistence.*;
+import lombok.Data;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
 
+import java.time.LocalDate;
 import java.util.*;
 
 
@@ -12,6 +14,7 @@ import java.util.*;
 @Getter
 @Setter
 @ToString
+@Data
 public class Claims {
 
     @Id
@@ -20,6 +23,9 @@ public class Claims {
 
     @Enumerated(EnumType.STRING)
     private Status status;
+
+    @Temporal(TemporalType.DATE)
+    private LocalDate date;
 
     @ManyToOne
     @JoinColumn(name = "staff_id")
