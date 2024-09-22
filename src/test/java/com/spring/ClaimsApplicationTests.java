@@ -4,6 +4,7 @@ import com.spring.dto.StaffDTO;
 import com.spring.entities.ProjectDetail;
 import com.spring.entities.Staff;
 import com.spring.repository.ProjectDetailCustom;
+import com.spring.repository.ProjectDetailRepository;
 import com.spring.repository.StaffRepository;
 import com.spring.sevices.EmailService;
 import com.spring.sevices.ProjectDetailService;
@@ -25,6 +26,8 @@ class ClaimsApplicationTests {
 	private final EmailService emailService;
 
 	@Autowired
+	ProjectDetailRepository projectDetailRepository;
+	@Autowired
     ClaimsApplicationTests(ProjectDetailService projectDetailService, ProjectDetailCustom custom, StaffRepository staffRepository, EmailService emailService) {
         this.projectDetailService = projectDetailService;
         this.custom = custom;
@@ -44,8 +47,13 @@ class ClaimsApplicationTests {
 
 	@Test
 	void contextLoads1() {
-		Staff staff = staffRepository.findByEmail("admin@gmail.com");
-		System.out.println(staff.getEmail());
+		Staff staff = staffRepository.findByEmail("phamhoaang10a2nt@gmail.com");
+		List<ProjectDetail> projectDetails = projectDetailRepository.findByProjectDetailKeyStaffId(staff.getStaffId());
+		for (ProjectDetail projectDetail1 : projectDetails)
+		{
+			System.out.println(projectDetail1.getProjectDetailKey().getProjectId());
+		}
 	}
+
 
 }

@@ -40,10 +40,14 @@
                 <a  sec:authorize="hasAuthority('ADMIN')" class="nav-link text-white h3" th:href="@{/staff/list}">Staff Information</a>
             </li>
 
-            <li class="nav-item">
-                <a class="nav-link text-white h3" th:href="@{/claims-requests}">Claims request</a>
+            <li th:each="projectId : ${projectLogin}">
+                <a class="nav-link text-white h3"
+                   th:href="@{/claims-requests/{projectId}/access}" th:text="'Claims request for project' + ${projectId}">
+                </a>
             </li>
-
+<!--            <li class="nav-item">-->
+<!--                <a class="nav-link text-white h3" th:href="@{/claims-requests/1/access}">Claims request</a>-->
+<!--            </li>-->
         </ul>
     </nav>
 </div>

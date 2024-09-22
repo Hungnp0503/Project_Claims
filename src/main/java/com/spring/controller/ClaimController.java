@@ -1,7 +1,10 @@
 package com.spring.controller;
 
 import com.spring.entities.Claims;
+import com.spring.entities.Staff;
+import com.spring.repository.ProjectDetailRepository;
 import com.spring.service.ClaimService;
+import com.spring.sevices.AuthServices;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.InputStreamResource;
 import org.springframework.http.HttpHeaders;
@@ -24,8 +27,33 @@ import java.util.stream.Collectors;
 @RequestMapping("/claims-requests")
 public class ClaimController {
     @Autowired
+    AuthServices authServices;
+    @Autowired
     private ClaimService claimService;
 
+    @Autowired
+    private ProjectDetailRepository projectDetailRepository;
+
+
+    @GetMapping("/{projectId}/access")
+    public String  checkProjectAccess(@PathVariable Integer projectId, Model model) {
+        // Lấy thông tin nhân viên từ SecurityContext
+        Staff staffDetails =  authServices.getCurrentUser().getStaffDb();
+        Integer staffId = staffDetails.getStaffId();
+
+        // Lấy roleProject từ ProjectDetail
+        String roleProject = projectDetailRepository.findRoleProjectByStaffAndProject(staffId, projectId);
+
+        // Kiểm tra roleProject và thực hiện xử lý tiếp theo
+        // Kiểm tra roleProject và chuyển hướng
+        if ("PM".equals(roleProject)) {
+            model.addAttribute("message", "Access granted as Project Manager");
+            return "redirect:/claims-requests"; // Trả về trang của Project Manager
+        } else {
+            model.addAttribute("error", "Access denied");
+            return "redirect:/claims/view"; // Trả về trang từ chối truy cập
+        }
+    }
     @GetMapping
     public String showClaimsRequests(Model model) {
         List<Claims> claims = claimService.getAllClaims();
