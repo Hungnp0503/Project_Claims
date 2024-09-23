@@ -20,7 +20,7 @@
         <h2 class="text-center">Staff List</h2>
         <table class="table table-striper">
             <thead>
-            <th>id</th>
+            <th>No</th>
             <th>staff name</th>
             <th>email</th>
             <th>job rank</th>
@@ -28,8 +28,8 @@
             <th>action</th>
             </thead>
             <tbody>
-            <tr th:each="staff : ${page.content}">
-                <td th:text="${staff.staffId}"></td>
+            <tr th:each="staff,iterStat : ${page.content}">
+                <td th:text="${iterStat.index+1}"></td>
                 <td th:text="${staff.staffName}"></td>
                 <td th:text="${staff.email}"></td>
                 <td th:text="${staff.jobRank}"></td>
