@@ -74,6 +74,7 @@ public class StaffController {
         if(bindingResult.hasErrors()){
             return "staff/staffCreate";
         }
+
         String rawPassword = staff.getPassword();
         String encryptPassword = passwordEncoder.encode(rawPassword);
         staff.setPassword(encryptPassword);

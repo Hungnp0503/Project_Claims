@@ -66,11 +66,12 @@ public class ClaimController {
 
     @GetMapping
     public String showClaimsRequests(Model model) {
-        Staff staffDetails =  authServices.getCurrentUser().getStaffDb();
+//        Staff staffDetails =  authServices.getCurrentUser().getStaffDb();
 
         //TODO List<ProjectDetail> projectDetailList = projectDetailRepository
         List<Claims> claims = claimService.getAllClaims();
         model.addAttribute("claims", claims);
+        
         return "layout/claim-request/claims-request";
     }
 
