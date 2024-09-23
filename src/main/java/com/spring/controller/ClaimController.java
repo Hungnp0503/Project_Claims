@@ -1,10 +1,8 @@
 package com.spring.controller;
 
-import com.spring.entities.Claims;
-import com.spring.entities.ClaimsDetails;
-import com.spring.entities.Staff;
+import com.spring.entities.*;
 import com.spring.repository.ProjectDetailRepository;
-import com.spring.service.ClaimService;
+import com.spring.sevices.ClaimService;
 import com.spring.sevices.AuthServices;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.InputStreamResource;
@@ -57,7 +55,7 @@ public class ClaimController {
 
         // Kiểm tra roleProject và thực hiện xử lý tiếp theo
         // Kiểm tra roleProject và chuyển hướng
-        if ("PM".equals(roleProject)) {
+        if ("PM".equals(roleProject) || staffDetails.getRoleStaff().equals(RoleStaff.ADMIN)) {
             model.addAttribute("message", "Access granted as Project Manager");
             return "redirect:/claims-requests"; // Trả về trang của Project Manager
         } else {
@@ -68,6 +66,9 @@ public class ClaimController {
 
     @GetMapping
     public String showClaimsRequests(Model model) {
+        Staff staffDetails =  authServices.getCurrentUser().getStaffDb();
+
+        //TODO List<ProjectDetail> projectDetailList = projectDetailRepository
         List<Claims> claims = claimService.getAllClaims();
         model.addAttribute("claims", claims);
         return "layout/claim-request/claims-request";
@@ -76,7 +77,7 @@ public class ClaimController {
     @GetMapping("/approve/{id}")
     public String approveClaim(@PathVariable("id") int id, Model model) {
         Claims claim = claimService.getClaimById(id);
-        if (claim != null && "Pending approval".equals(claim.getStatus())) {
+        if (claim != null && "Pending_Approval".equals(claim.getStatus().toString())) {
             claimService.updateClaimStatus(id, "Approved");
         }
         return "redirect:/claims-requests";
@@ -85,7 +86,7 @@ public class ClaimController {
     @GetMapping("/reject/{id}")
     public String rejectClaim(@PathVariable("id") int id, Model model) {
         Claims claim = claimService.getClaimById(id);
-        if (claim != null && "Pending approval".equals(claim.getStatus())) {
+        if (claim != null && "Pending_Approval".equals(claim.getStatus().toString())) {
             claimService.updateClaimStatus(id, "Rejected");
         }
         model.addAttribute("message", "Claim rejected successfully.");
@@ -95,7 +96,7 @@ public class ClaimController {
     @GetMapping("/pay/{id}")
     public String payClaim(@PathVariable("id") int id, Model model) {
         Claims claim = claimService.getClaimById(id);
-        if (claim != null && "Approved".equals(claim.getStatus())) {
+        if (claim != null && "Approved".equals(claim.getStatus().toString())) {
             claimService.updateClaimStatus(id, "Paid");
         }
         model.addAttribute("message", "Claim marked as paid successfully.");

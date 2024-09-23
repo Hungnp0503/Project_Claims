@@ -1,4 +1,4 @@
-package com.spring.service;
+package com.spring.sevices;
 
 import com.spring.entities.Claims;
 import com.spring.entities.Status;
@@ -28,7 +28,7 @@ public class ClaimService {
     }
 
     public List<Claims> getAllClaims() {
-        return claimRepository.findAll();
+        return claimRepository.findByStatusNot(Status.Draft);
     }
 
     public Claims getClaimById(int id) {

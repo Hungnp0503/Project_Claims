@@ -98,6 +98,12 @@ public class ProjectController {
             attributes.addFlashAttribute("message","To date must be greater than  from date");
             return "redirect:/project/create";
         }
+        if(project.getId() != null){
+            projectDetailCustom.delete(project.getId());
+        }
+        projectService.save(project);
+        Integer id = project.getId();
+
 
         String[] staffIdArray = staffId.split(",");
         String[] positionArray = role.split(",");
@@ -123,8 +129,7 @@ public class ProjectController {
             return "redirect:/project/create";
         }
 
-        projectService.save(project);
-        Integer id = project.getId();
+
         List<ProjectDetail> projectDetailList = new ArrayList<>();
 
         for (int i = 0; i < staffIdArray.length; i++) {
@@ -147,9 +152,10 @@ public class ProjectController {
             }
         }
 
-//        projectDetailCustom.delete(id);
+
         for(ProjectDetail detail : projectDetailList){
             projectDetailService.save(detail);
+            System.out.println(detail);
         }
 //
         return "redirect:/project/list";

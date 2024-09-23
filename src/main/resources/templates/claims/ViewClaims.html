@@ -13,7 +13,7 @@
     <!--    <link rel="stylesheet" href="/claimsCss/viewClaimsCSS.css"/>-->
 </head>
 <body>
-<main class="col-md-9">
+<main class="col-md-10">
     <link rel="stylesheet" th:href="@{/css/ViewClaims.css}">
     <div class="container mt-5">
         <h1 class="text-center">View Claims</h1>
@@ -87,8 +87,8 @@
 
                 <td th:text="${claim.status}"></td>
                 <td>
-                    <a th:href="@{/claims/update/{id}(id=${claim.id})}" class="btn btn-primary btn-sm">Chỉnh sửa</a>
-                    <a th:href="@{/claims/delete/{id}(id=${claim.id})}" class="btn btn-danger btn-sm">Xóa</a>
+                    <a th:href="@{/claims/update/{id}(id=${claim.id})}" class="btn btn-primary btn-sm">Update</a>
+                    <a th:href="@{/claims/delete/{id}(id=${claim.id})}" class="btn btn-danger btn-sm">Delete</a>
                 </td>
             </tr>
             </tbody>

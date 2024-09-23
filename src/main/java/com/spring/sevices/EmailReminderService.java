@@ -35,21 +35,23 @@ public class EmailReminderService {
         this.templateEngine = templateEngine;
     }
 
-    //    @Scheduled(cron = "0 10 21 * * ?")
-    @Scheduled(cron = "0 0 1 * * ?")
+    @Scheduled(cron = "0 25 19 * * ?")
+    //@Scheduled(cron = "0 0 1 * * ?")
     public void sendDailyReminderEmails() throws MessagingException {
 
         List<Claims> pendingClaims = claimRepository.findPendingApprovalClaims();
-        Map<Integer, List<Claims>> listMap = pendingClaims.stream()
-                .collect(Collectors.groupingBy(claim -> claim.getProject().getId()));
+        if(!pendingClaims.isEmpty()){
+            Map<Integer, List<Claims>> listMap = pendingClaims.stream()
+                    .collect(Collectors.groupingBy(claim -> claim.getProject().getId()));
 
-        for (Map.Entry<Integer, List<Claims>> entry : listMap.entrySet()) {
-            Integer projectId = entry.getKey();
-            ProjectDetail projectDetail = projectDetailRepository.findByProjectIdAndRoleProject(projectId, "PM");
-            List<Claims> claims = entry.getValue();
-            String subject = "Daily Request Approval Reminder";
-            String content = generateEmailContent(claims);
-            emailService.sendEmail(projectDetail.getStaff().getEmail(), subject, content);
+            for (Map.Entry<Integer, List<Claims>> entry : listMap.entrySet()) {
+                Integer projectId = entry.getKey();
+                ProjectDetail projectDetail = projectDetailRepository.findByProjectIdAndRoleProject(projectId, "PM");
+                List<Claims> claims = entry.getValue();
+                String subject = "Daily Request Approval Reminder";
+                String content = generateEmailContent(claims);
+                emailService.sendEmail(projectDetail.getStaff().getEmail(), subject, content);
+            }
         }
     }
     private String generateEmailContent(List<Claims> claims) {

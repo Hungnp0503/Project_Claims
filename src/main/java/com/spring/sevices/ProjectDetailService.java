@@ -11,7 +11,7 @@ public interface ProjectDetailService {
     List<ProjectDetail> readOneProjectId(Integer id);
     ProjectDetail save(ProjectDetail projectDetail);
     ProjectDetail delete(ProjectDetailKey id);
-
+    //ProjectDetail update(Integer id,String roleInProject, String role  );
 
 
 

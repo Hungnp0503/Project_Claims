@@ -6,7 +6,7 @@
 </head>
 <body>
 
-<main class="col-md-9">
+<main class="col-md-10">
     <h1>Project Information</h1>
     <span th:if="${message}" class="col-md-12 alert alert-danger float-right" th:text="${message}"></span>
     <form th:action="@{/project/save}" method="post" th:object="${project}">

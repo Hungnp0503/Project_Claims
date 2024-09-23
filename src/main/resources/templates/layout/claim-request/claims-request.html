@@ -12,7 +12,7 @@
 
 </head>
 <body>
-<main class="container mt-4">
+<main class="col-md-10">
         <h2>Claims Requests</h2>
         <button type="button" class="btn btn-primary mb-3" onclick="confirmDownload()">Download Selected Claims</button>
         <button type="button" class="btn btn-success mb-3" onclick="confirmMultiplePaid()">Mark Selected as Paid</button>
@@ -35,25 +35,25 @@
                 <td th:text="${claim.status}"></td>
                 <td th:text="${claim.date}"></td>
                 <td>
-                    <button th:if="${claim.status == 'Pending approval'}"
+                    <button th:if="${claim.status.toString() == 'Pending_Approval'}"
                             type="button"
                             class="btn btn-success btn-sm"
                             th:attr="onclick='confirmApproval(' + ${claim.id} + ')'">
                         Approve
                     </button>
-                    <button th:if="${claim.status == 'Pending approval'}"
+                    <button th:if="${claim.status.toString() == 'Pending_Approval'}"
                             type="button"
                             class="btn btn-danger btn-sm"
                             th:attr="onclick='confirmRejection(' + ${claim.id} + ')'">
                         Reject
                     </button>
-                    <button th:if="${claim.status == 'Approved'}"
+                    <button th:if="${claim.status.toString() == 'Approved'}"
                             type="button"
                             class="btn btn-info btn-sm"
                             th:attr="onclick='confirmPaid(' + ${claim.id} + ')'">
                         Paid
                     </button>
-                    <button th:if="${claim.status == 'Draft'}"
+                    <button th:if="${claim.status.toString() == 'Draft'}"
                             type="button"
                             class="btn btn-warning btn-sm"
                             th:onclick="'confirmCancellation(' + ${claim.id} + ')'">

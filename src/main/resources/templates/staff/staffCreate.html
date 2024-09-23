@@ -6,7 +6,7 @@
     <meta charset="UTF-8">
 </head>
 <body>
-    <main class="col-md-9">
+    <main class="col-md-10">
         <h2>Staff Information</h2>
         <form th:action="@{/staff/create}" method="post" th:object="${staff}">
             <input type="hidden" name="id" th:field="*{staffId}">

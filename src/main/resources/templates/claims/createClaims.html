@@ -11,7 +11,7 @@
     <link  rel="stylesheet" href="/claimsCss/createClaimsCSS.css"/>
 </head>
 <body>
-<main class="col-md-9">
+<main class="col-md-10">
     <link rel="stylesheet" th:href="@{/css/createClaimsCSS.css}">
     <form th:action="@{/claims/save}" method="post" th:object="${claims}">
         <input type="hidden" name="id" th:field="*{id}">
