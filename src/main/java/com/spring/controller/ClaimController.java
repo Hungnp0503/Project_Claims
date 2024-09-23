@@ -35,14 +35,15 @@ public class ClaimController {
     private ProjectDetailRepository projectDetailRepository;
 
 
-    @GetMapping("/{projectId}/access")
-    public String  checkProjectAccess(@PathVariable Integer projectId, Model model) {
+
+    @GetMapping("/access")
+    public String  checkProjectAccess( Model model) {
         // Lấy thông tin nhân viên từ SecurityContext
         Staff staffDetails =  authServices.getCurrentUser().getStaffDb();
         Integer staffId = staffDetails.getStaffId();
 
         // Lấy roleProject từ ProjectDetail
-        String roleProject = projectDetailRepository.findRoleProjectByStaffAndProject(staffId, projectId);
+        String roleProject = projectDetailRepository.findRoleProjectByStaffAndProject(staffId);
 
         // Kiểm tra roleProject và thực hiện xử lý tiếp theo
         // Kiểm tra roleProject và chuyển hướng

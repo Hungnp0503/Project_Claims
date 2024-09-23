@@ -18,8 +18,8 @@ public interface ProjectDetailRepository extends JpaRepository<ProjectDetail, Pr
     List<ProjectDetail> findByProjectDetailKeyStaffId(Integer staffId);
     ProjectDetail findByProjectDetailKey(ProjectDetailKey projectDetailKey);
 
-    @Query("SELECT pd.roleProject FROM ProjectDetail pd WHERE pd.projectDetailKey.staffId = :staffId AND pd.projectDetailKey.projectId = :projectId")
-    String findRoleProjectByStaffAndProject(@Param("staffId") Integer staffId, @Param("projectId") Integer projectId);
+    @Query("SELECT pd.roleProject FROM ProjectDetail pd WHERE pd.projectDetailKey.staffId = :staffId ")
+    String findRoleProjectByStaffAndProject(@Param("staffId") Integer staffId);
 
 
 }
