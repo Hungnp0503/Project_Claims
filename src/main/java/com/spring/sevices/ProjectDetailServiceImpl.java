@@ -3,6 +3,7 @@ package com.spring.sevices;
 import com.spring.entities.ProjectDetail;
 import com.spring.entities.ProjectDetailKey;
 import com.spring.repository.ProjectDetailRepository;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -12,7 +13,7 @@ public class ProjectDetailServiceImpl implements ProjectDetailService{
 
     private final ProjectDetailRepository  projectDetailRepository;
 
-
+    @Autowired
     public ProjectDetailServiceImpl(ProjectDetailRepository projectDetailRepository) {
         this.projectDetailRepository = projectDetailRepository;
     }

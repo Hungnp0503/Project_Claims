@@ -5,6 +5,7 @@ import com.spring.entities.ProjectDetail;
 import com.spring.repository.ClaimsRepository;
 import com.spring.repository.ProjectDetailRepository;
 import jakarta.mail.MessagingException;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 import org.thymeleaf.TemplateEngine;
@@ -26,6 +27,7 @@ public class EmailReminderService {
 
     private final TemplateEngine templateEngine;
 
+    @Autowired
     public EmailReminderService(ClaimsRepository claimRepository, EmailService emailService, ProjectDetailRepository projectDetailRepository, TemplateEngine templateEngine) {
         this.claimRepository = claimRepository;
         this.emailService = emailService;
