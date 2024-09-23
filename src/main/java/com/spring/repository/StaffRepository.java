@@ -21,5 +21,4 @@ public interface StaffRepository extends JpaRepository<Staff,Integer> {
     Page<Staff> findByStaffNameOrDepartmentOrJobRankOrEmail(@Param("search") String search, Pageable pageable);
 
     Staff findByEmail(String email);
-    Staff findByStaffName(String staffName);
 }

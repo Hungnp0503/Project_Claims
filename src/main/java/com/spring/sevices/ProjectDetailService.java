@@ -1,5 +1,6 @@
 package com.spring.sevices;
 
+import com.spring.entities.Claims;
 import com.spring.entities.ProjectDetail;
 import com.spring.entities.ProjectDetailKey;
 
@@ -11,6 +12,7 @@ public interface ProjectDetailService {
     List<ProjectDetail> readOneProjectId(Integer id);
     ProjectDetail save(ProjectDetail projectDetail);
     ProjectDetail delete(ProjectDetailKey id);
+
 
 
 

@@ -47,7 +47,7 @@
                             th:attr="onclick='confirmRejection(' + ${claim.id} + ')'">
                         Reject
                     </button>
-                    <button th:if="${claim.status == 'Approved'}"
+                    <button th:if="${claim.status == 'Approved'} && ${role == 'QA'}">
                             type="button"
                             class="btn btn-info btn-sm"
                             th:attr="onclick='confirmPaid(' + ${claim.id} + ')'">

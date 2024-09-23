@@ -1,10 +1,14 @@
 package com.spring.controller;
 
 import com.spring.entities.Claims;
+import com.spring.entities.RoleStaff;
 import com.spring.entities.Staff;
+import com.spring.repository.ClaimRepository;
 import com.spring.repository.ProjectDetailRepository;
 import com.spring.service.ClaimService;
 import com.spring.sevices.AuthServices;
+import com.spring.sevices.ClaimsService;
+import com.spring.sevices.ProjectDetailService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.InputStreamResource;
 import org.springframework.http.HttpHeaders;
@@ -34,6 +38,10 @@ public class ClaimController {
     @Autowired
     private ProjectDetailRepository projectDetailRepository;
 
+    @Autowired
+    private ClaimsService claimsService;
+    @Autowired
+    private ClaimRepository claimRepository;
 
 
     @GetMapping("/access")
@@ -47,7 +55,7 @@ public class ClaimController {
 
         // Kiểm tra roleProject và thực hiện xử lý tiếp theo
         // Kiểm tra roleProject và chuyển hướng
-        if ("PM".equals(roleProject)) {
+        if ("PM".equals(roleProject)|| "QA".equals(roleProject)|| staffDetails.getRoleStaff().equals(RoleStaff.ADMIN)) {
             model.addAttribute("message", "Access granted as Project Manager");
             return "redirect:/claims-requests"; // Trả về trang của Project Manager
         } else {
@@ -57,9 +65,33 @@ public class ClaimController {
     }
     @GetMapping
     public String showClaimsRequests(Model model) {
-        List<Claims> claims = claimService.getAllClaims();
-        model.addAttribute("claims", claims);
+        Staff staffDetails =  authServices.getCurrentUser().getStaffDb();
+        Integer staffId = staffDetails.getStaffId();
+        String roleProject = projectDetailRepository.findRoleProjectByStaffAndProject(staffId);
+
+
+        if(staffDetails.getRoleStaff().toString().equals("ADMIN")){
+            List<Claims> allClaims = claimService.getAllClaims();
+            model.addAttribute("claims", allClaims);
+        }else if(roleProject.equals("PM")) {
+            List<Integer> projectId= projectDetailRepository.findProjectDetailKey_ProjectIdByProjectDetailKey_StaffIdAndRoleProject(staffId,"PM");
+            for (Integer id : projectId){
+
+                List<Claims> allClaims = claimRepository.findAllByProject_Id(id);
+                model.addAttribute("claims", allClaims);
+                model.addAttribute("role","PM");
+            }
+        }else{
+            List<Integer> projectId= projectDetailRepository.findProjectDetailKey_ProjectIdByProjectDetailKey_StaffIdAndRoleProject(staffId,"QA");
+            for (Integer id : projectId){
+
+                List<Claims> allClaims = claimRepository.findAllByProject_Id(id);
+                model.addAttribute("claims", allClaims);
+                model.addAttribute("role","QA");
+            }
+        }
         return "layout/claim-request/claims-request";
+
     }
 
     @GetMapping("/approve/{id}")

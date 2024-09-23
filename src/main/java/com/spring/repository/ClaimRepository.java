@@ -9,4 +9,8 @@ import java.util.List;
 public interface ClaimRepository extends JpaRepository<Claims, Integer> {
     @Query(value = "SELECT * FROM claims WHERE id IN :ids", nativeQuery = true)
     List<Claims> findAllById(List<Integer> ids);
+
+    List<Claims> findAllByStatus(String status);
+
+    List<Claims> findAllByProject_Id(Integer projectId);
 }
