@@ -1,6 +1,7 @@
 package com.spring.controller;
 
 import com.spring.entities.Claims;
+import com.spring.entities.ClaimsDetails;
 import com.spring.service.ClaimService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.InputStreamResource;
@@ -25,6 +26,18 @@ import java.util.stream.Collectors;
 public class ClaimController {
     @Autowired
     private ClaimService claimService;
+
+    @GetMapping("/view/{id}")
+    public String viewClaimDetails(@PathVariable("id") int id, Model model) {
+        Claims claims = claimService.getClaimById(id);
+        if (claims == null) {
+            return "redirect:/claims-requests";
+        }
+        List<ClaimsDetails> claimDetails = claims.getClaimDays(); // Lấy danh sách claimDetails
+        model.addAttribute("claims", claims);
+        model.addAttribute("claimDetails", claimDetails);
+        return "layout/claim-request/claim-details";
+    }
 
     @GetMapping
     public String showClaimsRequests(Model model) {
