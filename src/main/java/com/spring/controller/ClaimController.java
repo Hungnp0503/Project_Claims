@@ -1,9 +1,14 @@
 package com.spring.controller;
 
-import com.spring.entities.*;
+import com.spring.entities.Claims;
+import com.spring.entities.RoleStaff;
+import com.spring.entities.Staff;
+import com.spring.repository.ClaimRepository;
 import com.spring.repository.ProjectDetailRepository;
 import com.spring.sevices.ClaimService;
 import com.spring.sevices.AuthServices;
+import com.spring.sevices.ClaimsService;
+import com.spring.sevices.ProjectDetailService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.InputStreamResource;
 import org.springframework.http.HttpHeaders;
@@ -26,23 +31,18 @@ import java.util.stream.Collectors;
 @RequestMapping("/claims-requests")
 public class ClaimController {
     @Autowired
-    private AuthServices authServices;
+    AuthServices authServices;
     @Autowired
     private ClaimService claimService;
+
     @Autowired
     private ProjectDetailRepository projectDetailRepository;
 
-    @GetMapping("/view/{id}")
-    public String viewClaimDetails(@PathVariable("id") int id, Model model) {
-        Claims claims = claimService.getClaimById(id);
-        if (claims == null) {
-            return "redirect:/claims-requests";
-        }
-        List<ClaimsDetails> claimDetails = claims.getClaimDays(); // Có thể truy cập danh sách claimDetails vì session vẫn mở
-        model.addAttribute("claims", claims);
-        model.addAttribute("claimDetails", claimDetails);
-        return "layout/claim-request/claim-details";
-    }
+    @Autowired
+    private ClaimsService claimsService;
+    @Autowired
+    private ClaimRepository claimRepository;
+
 
     @GetMapping("/access")
     public String  checkProjectAccess( Model model) {
@@ -55,7 +55,7 @@ public class ClaimController {
 
         // Kiểm tra roleProject và thực hiện xử lý tiếp theo
         // Kiểm tra roleProject và chuyển hướng
-        if ("PM".equals(roleProject) || staffDetails.getRoleStaff().equals(RoleStaff.ADMIN)) {
+        if ("PM".equals(roleProject)|| "QA".equals(roleProject)|| staffDetails.getRoleStaff().equals(RoleStaff.ADMIN)) {
             model.addAttribute("message", "Access granted as Project Manager");
             return "redirect:/claims-requests"; // Trả về trang của Project Manager
         } else {
@@ -63,16 +63,36 @@ public class ClaimController {
             return "redirect:/claims/view"; // Trả về trang từ chối truy cập
         }
     }
-
     @GetMapping
     public String showClaimsRequests(Model model) {
-//        Staff staffDetails =  authServices.getCurrentUser().getStaffDb();
+        Staff staffDetails =  authServices.getCurrentUser().getStaffDb();
+        Integer staffId = staffDetails.getStaffId();
+        String roleProject = projectDetailRepository.findRoleProjectByStaffAndProject(staffId);
 
-        //TODO List<ProjectDetail> projectDetailList = projectDetailRepository
-        List<Claims> claims = claimService.getAllClaims();
-        model.addAttribute("claims", claims);
-        
+
+        if(staffDetails.getRoleStaff().toString().equals("ADMIN")){
+            List<Claims> allClaims = claimService.getAllClaims();
+            model.addAttribute("claims", allClaims);
+            model.addAttribute("role","ADMIN");
+        }else if(roleProject.equals("PM")) {
+            List<Integer> projectId= projectDetailRepository.findProjectDetailKey_ProjectIdByProjectDetailKey_StaffIdAndRoleProject(staffId,"PM");
+            for (Integer id : projectId){
+
+                List<Claims> allClaims = claimRepository.findAllByProject_Id(id);
+                model.addAttribute("claims", allClaims);
+                model.addAttribute("role","PM");
+            }
+        }else{
+            List<Integer> projectId= projectDetailRepository.findProjectDetailKey_ProjectIdByProjectDetailKey_StaffIdAndRoleProject(staffId,"QA");
+            for (Integer id : projectId){
+
+                List<Claims> allClaims = claimRepository.findAllByProject_Id(id);
+                model.addAttribute("claims", allClaims);
+                model.addAttribute("role","QA");
+            }
+        }
         return "layout/claim-request/claims-request";
+
     }
 
     @GetMapping("/approve/{id}")

@@ -13,5 +13,5 @@ public interface ClaimRepository extends JpaRepository<Claims, Integer> {
 
     List<Claims> findByStatusNot(Status status);
 
-
+    List<Claims> findAllByProject_Id(Integer projectId);
 }

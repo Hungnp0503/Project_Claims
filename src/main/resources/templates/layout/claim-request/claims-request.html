@@ -12,7 +12,7 @@
 
 </head>
 <body>
-<main class="col-md-10">
+<main class="container mt-4">
         <h2>Claims Requests</h2>
         <button type="button" class="btn btn-primary mb-3" onclick="confirmDownload()">Download Selected Claims</button>
         <button type="button" class="btn btn-success mb-3" onclick="confirmMultiplePaid()">Mark Selected as Paid</button>
@@ -35,31 +35,31 @@
                 <td th:text="${claim.status}"></td>
                 <td th:text="${claim.date}"></td>
                 <td>
-                    <button th:if="${claim.status.toString() == 'Pending_Approval'}"
+                    <button th:if="${claim.status.toString() == 'Pending_Approval' || role == 'ADMIN'}"
                             type="button"
                             class="btn btn-success btn-sm"
                             th:attr="onclick='confirmApproval(' + ${claim.id} + ')'">
                         Approve
                     </button>
-                    <button th:if="${claim.status.toString() == 'Pending_Approval'}"
+                    <button th:if="${claim.status.toString() == 'Pending_Approval' || role == 'ADMIN'}"
                             type="button"
                             class="btn btn-danger btn-sm"
                             th:attr="onclick='confirmRejection(' + ${claim.id} + ')'">
                         Reject
                     </button>
-                    <button th:if="${claim.status.toString() == 'Approved'}"
+                    <button th:if="${(claim.status.toString() == 'Approved' && role == 'QA') || role == 'ADMIN'}"
                             type="button"
                             class="btn btn-info btn-sm"
                             th:attr="onclick='confirmPaid(' + ${claim.id} + ')'">
                         Paid
                     </button>
-                    <button th:if="${claim.status.toString() == 'Draft'}"
+                    <button th:if="${claim.status.toString() == 'Draft' || role == 'ADMIN'}"
                             type="button"
                             class="btn btn-warning btn-sm"
                             th:onclick="'confirmCancellation(' + ${claim.id} + ')'">
                         Cancel
                     </button>
-                    <a th:href="@{/claims-requests/view/{id}(id=${claim.id})}" class="btn btn-primary btn-sm">View</a>
+                    <a th:href="@{/claims-requests/{id}(id=${claim.id})}" class="btn btn-primary btn-sm">View</a>
                 </td>
             </tr>
             </tbody>

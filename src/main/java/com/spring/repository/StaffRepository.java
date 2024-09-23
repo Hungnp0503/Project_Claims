@@ -21,5 +21,10 @@ public interface StaffRepository extends JpaRepository<Staff,Integer> {
     Page<Staff> findByStaffNameOrDepartmentOrJobRankOrEmail(@Param("search") String search, Pageable pageable);
 
     Staff findByEmail(String email);
-    Staff findByStaffName(String staffName);
+
+    boolean existsByEmail(String email);
+
+    @Query("SELECT CASE WHEN COUNT(s) > 0 THEN TRUE ELSE FALSE END FROM Staff s WHERE s.email = :email AND s.staffId <> :staffId")
+    boolean existsByEmailAndStaffIdNot(@Param("email") String email, @Param("staffId") Integer staffId);
+
 }

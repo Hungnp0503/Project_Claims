@@ -1,5 +1,6 @@
 package com.spring.controller;
 
+import com.spring.annotationEmail.UniqueEmailValidator;
 import com.spring.entities.RoleStaff;
 import com.spring.entities.Staff;
 import com.spring.repository.StaffRepository;
@@ -69,19 +70,34 @@ public class StaffController {
     public String saveStaff(
             @Validated(value = {CreateGroup.class, UpdateGroup.class}) @ModelAttribute("staff") Staff staff,
             BindingResult bindingResult,
-            RedirectAttributes attributes){
+            RedirectAttributes attributes) {
 
-        if(bindingResult.hasErrors()){
-            return "staff/staffCreate";
+        try {
+            UniqueEmailValidator.setCurrentStaff(staff);
+
+            // Kiểm tra bindingResult để xem có lỗi không
+            if (bindingResult.hasErrors()) {
+                return "staff/staffCreate"; // Trả lại trang với lỗi
+            }
+
+            // Nếu không có lỗi, tiến hành mã hóa mật khẩu
+            String rawPassword = staff.getPassword();
+            String encryptPassword = passwordEncoder.encode(rawPassword);
+            staff.setPassword(encryptPassword);
+            staff.setRoleStaff(RoleStaff.USER);
+
+            // Kiểm tra lại một lần nữa trước khi lưu
+            if (staffRepository.existsByEmail(staff.getEmail())) {
+                bindingResult.rejectValue("email", "error.staff", "Email already exists");
+                return "staff/staffCreate"; // Trả lại trang với lỗi
+            }
+
+            staffRepository.save(staff);
+            attributes.addFlashAttribute("message", "Changes about staff have been updated");
+            return "redirect:/staff/list"; // Chuyển hướng khi thành công
+        } finally {
+            UniqueEmailValidator.clear();
         }
-
-        String rawPassword = staff.getPassword();
-        String encryptPassword = passwordEncoder.encode(rawPassword);
-        staff.setPassword(encryptPassword);
-        staff.setRoleStaff(RoleStaff.USER);
-        staffRepository.save(staff);
-        attributes.addFlashAttribute("message", "Changes about staff have been updated");
-        return "redirect:/staff/list";
     }
     @GetMapping("/staff/edit")
     public String editStaff(

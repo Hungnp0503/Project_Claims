@@ -1,5 +1,6 @@
 package com.spring.entities;
 
+import com.spring.annotationEmail.Unique;
 import com.spring.validation.CreateGroup;
 import com.spring.validation.UpdateGroup;
 import jakarta.persistence.*;
@@ -28,6 +29,7 @@ public class Staff {
 
     @Column(nullable = false)
     @NotBlank(message = "{staff.blank.email}", groups = {UpdateGroup.class, CreateGroup.class})
+    @Unique(message = "{staff.unique.email}", idField = "staffId", groups = {UpdateGroup.class, CreateGroup.class})
     private String email;
 
     @Column(nullable = false)
