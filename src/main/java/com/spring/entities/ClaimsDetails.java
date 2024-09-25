@@ -40,7 +40,5 @@ public class ClaimsDetails {
 
     private Double totalOfHours;
 
-
-
     private String description;
 }

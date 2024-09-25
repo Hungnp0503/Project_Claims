@@ -2,6 +2,7 @@ package com.spring.controller;
 
 import com.spring.auth.CustomUserDetail;
 import com.spring.entities.ProjectDetail;
+import com.spring.entities.RoleStaff;
 import com.spring.entities.Staff;
 import com.spring.repository.ProjectDetailRepository;
 import com.spring.repository.StaffRepository;
@@ -21,20 +22,34 @@ import java.util.List;
 @Controller
 public class LoginController {
 
+    @Autowired
+    private AuthServices authServices;
+
 
     @GetMapping("/login")
     public String loginForm(Model model) {
         Object userLogger =  SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+
         if(!(userLogger  instanceof UserDetails)) {
             model.addAttribute("staff", new Staff());
             return "login";
         }
-        return "redirect:/claims/view";
+        model.addAttribute("staffName",((UserDetails) userLogger).getUsername());
+        return "redirect:/";
     }
     @GetMapping("/logout")
     public String logout(HttpSession session) {
         session.invalidate();
         return "redirect:/login";
+    }
+
+    @GetMapping(value = {"/","/home"})
+    public String home(Model model) {
+        Staff staff = authServices.getCurrentUser().getStaffDb();
+        if(staff.getRoleStaff().equals(RoleStaff.ADMIN)){
+            return "redirect:/project/list";
+        }
+        return "redirect:/claims/view";
     }
 
 

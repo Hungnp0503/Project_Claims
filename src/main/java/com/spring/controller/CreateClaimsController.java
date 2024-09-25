@@ -41,8 +41,12 @@ public class CreateClaimsController {
     @Autowired
     private ClaimsRepository claimsRepository;
 
+    @ModelAttribute("currentUri")
+    public String getCurrentUri(HttpServletRequest request) {
+        return request.getRequestURI();
+    }
 
-    @GetMapping("/createClaims")
+    @GetMapping("/claims/create")
     public String claimsPage( Model model, HttpSession session
                              ) {
         Staff staff = authServices.getCurrentUser().getStaffDb();

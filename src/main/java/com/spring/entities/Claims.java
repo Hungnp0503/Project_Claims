@@ -14,7 +14,7 @@ import java.util.*;
 @Entity
 @Getter
 @Setter
-@ToString
+@ToString(exclude = {"claimDays"})
 @Data
 public class Claims {
 

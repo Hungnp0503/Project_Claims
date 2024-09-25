@@ -9,6 +9,7 @@ import com.spring.sevices.ClaimService;
 import com.spring.sevices.AuthServices;
 import com.spring.sevices.ClaimsService;
 import com.spring.sevices.ProjectDetailService;
+import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.InputStreamResource;
 import org.springframework.http.HttpHeaders;
@@ -16,10 +17,7 @@ import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.*;
 
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
@@ -28,7 +26,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 @Controller
-@RequestMapping("/claims-requests")
+@RequestMapping("/requests-claims")
 public class ClaimController {
     @Autowired
     AuthServices authServices;
@@ -43,7 +41,10 @@ public class ClaimController {
     @Autowired
     private ClaimRepository claimRepository;
 
-
+    @ModelAttribute("currentUri")
+    public String getCurrentUri(HttpServletRequest request) {
+        return request.getRequestURI();
+    }
     @GetMapping("/access")
     public String  checkProjectAccess( Model model) {
         // Lấy thông tin nhân viên từ SecurityContext
@@ -57,7 +58,7 @@ public class ClaimController {
         // Kiểm tra roleProject và chuyển hướng
         if ("PM".equals(roleProject)|| "QA".equals(roleProject)|| staffDetails.getRoleStaff().equals(RoleStaff.ADMIN)) {
             model.addAttribute("message", "Access granted as Project Manager");
-            return "redirect:/claims-requests"; // Trả về trang của Project Manager
+            return "redirect:/requests-claims"; // Trả về trang của Project Manager
         } else {
             model.addAttribute("error", "Access denied");
             return "redirect:/claims/view"; // Trả về trang từ chối truy cập
@@ -101,7 +102,7 @@ public class ClaimController {
         if (claim != null && "Pending_Approval".equals(claim.getStatus().toString())) {
             claimService.updateClaimStatus(id, "Approved");
         }
-        return "redirect:/claims-requests";
+        return "redirect:/requests-claims";
     }
 
     @GetMapping("/reject/{id}")
@@ -111,7 +112,7 @@ public class ClaimController {
             claimService.updateClaimStatus(id, "Rejected");
         }
         model.addAttribute("message", "Claim rejected successfully.");
-        return "redirect:/claims-requests";
+        return "redirect:/requests-claims";
     }
 
     @GetMapping("/pay/{id}")
@@ -121,7 +122,7 @@ public class ClaimController {
             claimService.updateClaimStatus(id, "Paid");
         }
         model.addAttribute("message", "Claim marked as paid successfully.");
-        return "redirect:/claims-requests";
+        return "redirect:/requests-claims";
     }
 
     @GetMapping("/pay-multiple/{ids}")
@@ -131,13 +132,13 @@ public class ClaimController {
                 .collect(Collectors.toList());
         claimService.updateMultipleClaimsStatus(claimIds, "Paid");
         model.addAttribute("message", "Selected claims marked as paid successfully.");
-        return "redirect:/claims-requests";
+        return "redirect:/requests-claims";
     }
 
     @GetMapping("/cancel/{id}")
     public String cancelClaim(@PathVariable("id") int claimId) {
         claimService.cancelClaim(claimId);
-        return "redirect:/claims-requests";
+        return "redirect:/requests-claims";
     }
 
     @GetMapping("/download")
@@ -157,5 +158,15 @@ public class ClaimController {
                 .headers(headers)
                 .contentType(MediaType.parseMediaType("text/csv"))
                 .body(new InputStreamResource(bais));
+    }
+    @GetMapping("/view/{id}")
+    public String viewClaimDetails(@PathVariable("id") Integer id, Model model) {
+        Claims claims = claimService.getClaimById(id);
+        if (claims == null) {
+            return "redirect:/requests-claims";
+        }
+        model.addAttribute("claims", claims);
+        model.addAttribute("claimDetails", claims.getClaimDays());
+        return "layout/claim-request/claim-details";
     }
 }

@@ -59,7 +59,7 @@
                             th:onclick="'confirmCancellation(' + ${claim.id} + ')'">
                         Cancel
                     </button>
-                    <a th:href="@{/claims-requests/{id}(id=${claim.id})}" class="btn btn-primary btn-sm">View</a>
+                    <a th:href="@{/requests-claims/view/{id}(id=${claim.id})}" class="btn btn-primary btn-sm">View</a>
                 </td>
             </tr>
             </tbody>

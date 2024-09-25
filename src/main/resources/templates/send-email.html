@@ -52,24 +52,28 @@
     <tr>
         <th>Project Name</th>
         <th>Staff Name</th>
-        <th>Date</th>
-        <th>Day</th>
-        <th>From date</th>
-        <th>To date</th>
-        <th>Total of hours</th>
+<!--        <th>Date</th>-->
+<!--        <th>Day</th>-->
+<!--        <th>From date</th>-->
+<!--        <th>To date</th>-->
+<!--        <th>Total of hours</th>-->
         <th>Status</th>
+        <th>Action</th>
     </tr>
     </thead>
     <tbody>
     <tr th:each="claim : ${claims}">
         <td th:text="${claim.project.projectName}"></td>
         <td th:text="${claim.staff.staffName}"></td>
-        <td th:text="${claim.date}"></td>
-        <td th:text="${claim.day}"></td>
-        <td th:text="${claim.fromDate}"></td>
-        <td th:text="${claim.toDate}"></td>
-        <td th:text="${claim.totalOfHours}"></td>
+<!--        <td th:text="${claim.date}"></td>-->
+<!--        <td th:text="${claim.day}"></td>-->
+<!--        <td th:text="${claim.fromDate}"></td>-->
+<!--        <td th:text="${claim.toDate}"></td>-->
+<!--        <td th:text="${claim.totalOfHours}"></td>-->
         <td th:text="${claim.status}"></td>
+        <td><a th:href="'http://localhost:8080' + ${#uris.escapePath('/requests-claims/view/' + claim.id)}">View</a></td>
+
+
     </tr>
     </tbody>
 </table>

@@ -11,6 +11,7 @@ import com.spring.sevices.ProjectDetailService;
 import com.spring.sevices.ProjectService;
 import com.spring.validation.CreateGroup;
 import com.spring.validation.UpdateGroup;
+import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -41,6 +42,10 @@ public class ProjectController {
         this.projectDetailService = projectDetailService;
         this.projectDetailCustom = projectDetailCustom;
     }
+    @ModelAttribute("currentUri")
+    public String getCurrentUri(HttpServletRequest request) {
+        return request.getRequestURI();
+    }
 
     @GetMapping("/test/template")
     public String test() {
@@ -58,6 +63,7 @@ public class ProjectController {
     @RequestMapping(value="/project/list",method = {RequestMethod.GET,RequestMethod.POST})
     public String listProject( @RequestParam(value = "page",defaultValue = "1") Integer pageNumber,
                                @RequestParam(value = "keyword",required = false) String keyword,
+                               HttpServletRequest request,
                                Model model) {
 
         int pageSize = 5;
@@ -156,7 +162,9 @@ public class ProjectController {
         for(ProjectDetail detail : projectDetailList){
             projectDetailService.save(detail);
             System.out.println(detail);
+
         }
+
 //
         return "redirect:/project/list";
     }

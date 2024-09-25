@@ -1,11 +1,10 @@
 package com.spring;
 
 import com.spring.dto.StaffDTO;
+import com.spring.entities.Claims;
 import com.spring.entities.ProjectDetail;
 import com.spring.entities.Staff;
-import com.spring.repository.ProjectDetailCustom;
-import com.spring.repository.ProjectDetailRepository;
-import com.spring.repository.StaffRepository;
+import com.spring.repository.*;
 import com.spring.sevices.EmailService;
 import com.spring.sevices.ProjectDetailService;
 import jakarta.mail.MessagingException;
@@ -23,25 +22,26 @@ class ClaimsApplicationTests {
 	private final ProjectDetailService projectDetailService;
 	private final ProjectDetailCustom custom;
 	private final StaffRepository staffRepository;
+	private final ClaimsRepository claimsRepository;
 	private final EmailService emailService;
 
 	@Autowired
 	ProjectDetailRepository projectDetailRepository;
 	@Autowired
-    ClaimsApplicationTests(ProjectDetailService projectDetailService, ProjectDetailCustom custom, StaffRepository staffRepository, EmailService emailService) {
+    ClaimsApplicationTests(ProjectDetailService projectDetailService, ProjectDetailCustom custom, StaffRepository staffRepository, ClaimsRepository claimsRepository, EmailService emailService) {
         this.projectDetailService = projectDetailService;
         this.custom = custom;
         this.staffRepository = staffRepository;
+        this.claimsRepository = claimsRepository;
         this.emailService = emailService;
     }
 
     @Test
 	void contextLoads() {
-		List<ProjectDetail> projectDetail = projectDetailService.readOneProjectId(44);
-		for (ProjectDetail projectDetail1 : projectDetail){
-			if(projectDetail1.getRoleProject().equals("PM")){
-				System.out.println(projectDetail1.getStaff().getEmail());
-			};
+		List<Claims> pendingClaims = claimsRepository.findPendingApprovalClaims();
+		System.out.println(pendingClaims.size());
+		for (Claims projectDetail1 : pendingClaims){
+			System.out.println(projectDetail1);
 		}
 	}
 

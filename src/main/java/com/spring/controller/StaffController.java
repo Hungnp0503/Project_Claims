@@ -6,6 +6,7 @@ import com.spring.entities.Staff;
 import com.spring.repository.StaffRepository;
 import com.spring.validation.CreateGroup;
 import com.spring.validation.UpdateGroup;
+import jakarta.servlet.http.HttpServletRequest;
 import org.hibernate.sql.Update;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -32,6 +33,11 @@ public class StaffController {
 
     @Autowired
     StaffRepository staffRepository;
+
+    @ModelAttribute("currentUri")
+    public String getCurrentUri(HttpServletRequest request) {
+        return request.getRequestURI();
+    }
     @RequestMapping(value="/staff/list",method = {RequestMethod.GET, RequestMethod.POST})
     public String staffListPage(
             Model model,

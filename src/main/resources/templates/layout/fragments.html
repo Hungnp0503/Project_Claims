@@ -25,30 +25,26 @@
 
 
 <div th:fragment="menu" class="col-md-2 bg-secondary min-vh-100">
-    <nav class="navbar">
-        <ul class="navbar-nav ">
-
-            <li class="nav-item ">
-                <a class="nav-link text-white" th:href="@{/claims/view}">My claims</a>
+    <nav class="navbar w-100 p-0">
+        <ul class="navbar-nav w-100 p-0">
+            <li class="nav-item" th:class="${currentUri.contains('/claims')} ? 'bg-menu' : ''">
+                <a class="nav-link text-white" sec:authorize="hasAuthority('USER')" th:href="@{/claims/view}">My claims</a>
             </li>
-
-            <li class="nav-item">
-                <a  sec:authorize="hasAuthority('ADMIN')" class="nav-link text-white" th:href="@{/project/list}">Project Information</a>
+            <li class="nav-item" th:class="${currentUri.contains('/project') ? 'bg-menu' : ''}">
+                <a sec:authorize="hasAuthority('ADMIN')" class="nav-link text-white" th:href="@{/project/list}">Project Information</a>
             </li>
-
-            <li class="nav-item">
-                <a  sec:authorize="hasAuthority('ADMIN')" class="nav-link text-white" th:href="@{/staff/list}">Staff Information</a>
+            <li class="nav-item" th:class="${currentUri.contains('/staff')} ? 'bg-menu' : ''">
+                <a sec:authorize="hasAuthority('ADMIN')" class="nav-link text-white" th:href="@{/staff/list}">Staff Information</a>
             </li>
-
-            <li>
-                <a class="nav-link text-white"
-                   th:href="@{/claims-requests/access}">
-                    Claims request for project
-                </a>
+            <li class="nav-item" th:class="${currentUri.contains('/requests-claims')} ? 'bg-menu' : ''">
+                <a class="nav-link text-white" th:href="@{/requests-claims/access}">Claims request for project</a>
             </li>
         </ul>
     </nav>
 </div>
+
+
+
 
 
 <div th:fragment="footer">

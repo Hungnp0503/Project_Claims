@@ -43,4 +43,6 @@ li:hover {
 .fa-user {
     color:white;
 }
-
+.bg-menu {
+    background-color: #5a6268; /* Màu nền cho mục đang chọn */
+}

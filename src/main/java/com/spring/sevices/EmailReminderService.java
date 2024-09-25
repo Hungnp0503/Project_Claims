@@ -1,6 +1,7 @@
 package com.spring.sevices;
 
 import com.spring.entities.Claims;
+import com.spring.entities.ClaimsDetails;
 import com.spring.entities.ProjectDetail;
 import com.spring.repository.ClaimsRepository;
 import com.spring.repository.ProjectDetailRepository;
@@ -35,8 +36,8 @@ public class EmailReminderService {
         this.templateEngine = templateEngine;
     }
 
-    @Scheduled(cron = "0 25 19 * * ?")
-    //@Scheduled(cron = "0 0 1 * * ?")
+//    @Scheduled(cron = "0 25 19 * * ?")
+    @Scheduled(cron = "0 25 1 * * ?")
     public void sendDailyReminderEmails() throws MessagingException {
 
         List<Claims> pendingClaims = claimRepository.findPendingApprovalClaims();
@@ -58,7 +59,6 @@ public class EmailReminderService {
         Context context = new Context();
         context.setVariable("claims", claims);
         context.setVariable("size", claims.size());
-
         return templateEngine.process("send-email", context);
     }
 

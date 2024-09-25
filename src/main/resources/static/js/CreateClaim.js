@@ -1,4 +1,5 @@
 let currentStep = 1;
+let dayIndex ; // Khởi tạo dayIndex dựa trên số lượng hàng hiện có
 
 function showStep(step) {
     // Ẩn tất cả các bước và các bước hiện tại
@@ -37,6 +38,7 @@ function prevStep() {
 
 // Gọi hàm showStep ban đầu để thiết lập trạng thái của các nút
 document.addEventListener('DOMContentLoaded', function() {
+    dayIndex = document.querySelectorAll('#claims-body tr').length;
     showStep(currentStep);
 });
 
@@ -92,16 +94,44 @@ function calculateTotalHours(row) {
     }
 }
 
+function checkDuplicateDates(dayInput) {
+    var dates = [];
+    var hasDuplicate = false;
+
+    // Lặp qua từng trường ngày
+    document.querySelectorAll('.day').forEach(function (input) {
+        var dateValue = input.value;
+        if (dates.includes(dateValue) && input !== dayInput) { // Nếu ngày đã tồn tại và không phải là ngày đang nhập
+            hasDuplicate = true;
+            alert("Ngày đã được chọn, vui lòng chọn ngày khác.");
+            input.value = ''; // Xóa trường ngày bị trùng
+        }
+        dates.push(dateValue);
+    });
+    return hasDuplicate; // Trả về true nếu có trùng
+
+}
+
 // Cập nhật thứ trong tuần dựa trên ngày
 function updateDayOfWeek(dayInput, dayOfWeekInput) {
+    // Nếu ngày bị trùng, không cập nhật thứ trong tuần
+    if (checkDuplicateDates(dayInput)) {
+        dayInput.value = ''; // Xóa giá trị ngày nếu có ngày trùng
+        dayOfWeekInput.value = ''; // Xóa giá trị thứ trong tuần
+        return; // Thoát khỏi hàm nếu có ngày trùng
+    }
+
+    // Nếu không trùng ngày, tiếp tục cập nhật thứ trong tuần
     if (dayInput.value) {
         const date = new Date(dayInput.value);
         const daysOfWeek = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"];
         dayOfWeekInput.value = daysOfWeek[date.getDay()];
     } else {
-        dayOfWeekInput.value = "";
+        dayOfWeekInput.value = ''; // Xóa giá trị nếu không có ngày
     }
 }
+
+
 
 // Gắn sự kiện cho các trường đầu vào
 document.addEventListener('DOMContentLoaded', function() {
@@ -109,6 +139,8 @@ document.addEventListener('DOMContentLoaded', function() {
     const projectEndTime = document.getElementById("project-end-time");
 
     projectEndTime.addEventListener("change", validateTimes);
+
+    // Gán sự kiện cho tất cả các trường ngày, thời gian bắt đầu, và thời gian kết thúc hiện có
     document.querySelectorAll('#claims-body .day').forEach(input => {
         input.addEventListener('change', function() {
             updateDayOfWeek(this, this.closest('tr').querySelector('.day-of-week'));
@@ -122,7 +154,6 @@ document.addEventListener('DOMContentLoaded', function() {
 
     // Khi nhấn nút "Thêm ngày"
     document.getElementById("add-day-btn").addEventListener("click", function() {
-        let dayIndex = 1;
         // Lấy phần tbody của bảng
         const tbody = document.getElementById("claims-body");
 
@@ -154,13 +185,13 @@ document.addEventListener('DOMContentLoaded', function() {
             </td>
         `;
 
-
         // Thêm hàng mới vào tbody
         tbody.appendChild(newRow);
 
         // Gán sự kiện cho các phần tử mới
         newRow.querySelector('.day').addEventListener('change', function() {
             updateDayOfWeek(this, this.closest('tr').querySelector('.day-of-week'));
+
         });
         newRow.querySelector('.start-time').addEventListener('change', function() {
             calculateTotalHours(this.closest('tr'));
@@ -171,10 +202,11 @@ document.addEventListener('DOMContentLoaded', function() {
         newRow.querySelector('.remove-btn').addEventListener('click', function() {
             newRow.remove();
         });
-        dayIndex++;
-    });
 
-    // Thêm sự kiện xóa cho nút Xóa của hàng đầu tiên
+        dayIndex++; // Tăng chỉ số index cho hàng mới
+    },{ once: true });
+
+    // Gán sự kiện cho nút xóa của các hàng hiện có
     document.querySelectorAll(".remove-btn").forEach(function(button) {
         button.addEventListener("click", function() {
             button.closest("tr").remove();
