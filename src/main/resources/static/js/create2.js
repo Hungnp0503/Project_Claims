@@ -16,8 +16,8 @@ document.addEventListener('DOMContentLoaded', function() {
             startDateInput.value = startDate;
             endDateInput.value = endDate;
             roleInput.value = role;
-            // dayInput.setAttribute('min', startDate);
-            // dayInput.setAttribute('max', endDate);
+            dayInput.setAttribute('min', startDate);
+            dayInput.setAttribute('max', endDate);
         } else {
             startDateInput.value = '';
             endDateInput.value = '';
