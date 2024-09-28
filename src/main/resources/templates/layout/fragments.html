@@ -27,6 +27,9 @@
 <div th:fragment="menu" class="col-md-2 bg-secondary min-vh-100">
     <nav class="navbar w-100 p-0">
         <ul class="navbar-nav w-100 p-0">
+            <li class="nav-item" th:class="${currentUri.contains('/statistical') ? 'bg-menu' : ''}">
+                <a sec:authorize="hasAuthority('ADMIN')" class="nav-link text-white" th:href="@{/statistical}">Thống kê</a>
+            </li>
             <li class="nav-item" th:class="${currentUri.contains('/claims')} ? 'bg-menu' : ''">
                 <a class="nav-link text-white" sec:authorize="hasAuthority('USER')" th:href="@{/claims/view}">My claims</a>
             </li>

@@ -21,12 +21,14 @@ public class SecurityConfig {
     private static final String[] PERMIT_ALL_LINK = {
             "/login",
             "/css/**",
-            "/js/**"
+            "/js/**",
+            "/rest/statistics/**"
     };
 
     private static final String[] ADMIN_PERMIT_LINK = {
             "/project/**",
-            "/staff/**"
+            "/staff/**",
+            "/rest/statistics/**"
     };
 
 

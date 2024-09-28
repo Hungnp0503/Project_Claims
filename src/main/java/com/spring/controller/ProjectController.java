@@ -16,7 +16,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
-import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -45,6 +44,26 @@ public class ProjectController {
     @ModelAttribute("currentUri")
     public String getCurrentUri(HttpServletRequest request) {
         return request.getRequestURI();
+    }
+
+    @GetMapping("/statistical")
+    public String thongKe(Model model,
+                          @RequestParam(value = "project",required = false) Integer id ){
+
+        List<Project> projects = projectService.readAll();
+        model.addAttribute("projects", projects);
+        model.addAttribute("id", id);
+        return "statistical";
+    }
+
+    @PostMapping("/statisticalId")
+    public String thongKe1(Model model,
+                          @RequestParam(value = "project",required = false) Integer id ){
+
+        List<Project> projects = projectService.readAll();
+        model.addAttribute("projects", projects);
+        model.addAttribute("id", id);
+        return "statistical";
     }
 
     @GetMapping("/test/template")
@@ -100,7 +119,7 @@ public class ProjectController {
         if (bindingResult.hasErrors()) {
             return "project/create-project";
         }
-        if(project.getFromDate().getDayOfMonth() >= project.getToDate().getDayOfMonth()){
+        if(project.getFromDate().isAfter(project.getToDate())){
             attributes.addFlashAttribute("message","To date must be greater than  from date");
             return "redirect:/project/create";
         }

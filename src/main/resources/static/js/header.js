@@ -156,6 +156,9 @@ $(document).ready(function() {
 
         });
         document.querySelector("tbody").innerHTML = html;
+        updateSelectOptions();
+        updatePositionOptions();
+
     }
     xmlHttp.open('get', url, true);
     xmlHttp.send();  //3. send request

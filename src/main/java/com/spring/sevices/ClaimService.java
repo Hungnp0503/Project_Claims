@@ -12,7 +12,9 @@ import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.OutputStreamWriter;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 @Service
 public class ClaimService {
@@ -64,5 +66,23 @@ public class ClaimService {
             }
         }
         return new ByteArrayInputStream(out.toByteArray());
+    }
+
+    public Map<Status, Long> getClaimsCountByStatus() {
+        List<Object[]> results = claimRepository.countClaimsByStatus();
+        Map<Status, Long> claimsCountMap = new HashMap<>();
+        for (Object[] result : results) {
+            claimsCountMap.put((Status) result[0], (Long) result[1]);
+        }
+        return claimsCountMap;
+    }
+
+    public Map<Status, Long> countClaimsByStatusAndProjectId(Integer id) {
+        List<Object[]> results = claimRepository.countClaimsByStatusAndProjectId(id);
+        Map<Status, Long> claimsCountMap = new HashMap<>();
+        for (Object[] result : results) {
+            claimsCountMap.put((Status) result[0], (Long) result[1]);
+        }
+        return claimsCountMap;
     }
 }
