@@ -35,19 +35,19 @@
                 <td th:text="${claim.status}"></td>
                 <td th:text="${claim.date}"></td>
                 <td>
-                    <button th:if="${claim.status == 'Pending approval'}"
+                    <button th:if="${claim.status == 'Pending_Approval'}"
                             type="button"
                             class="btn btn-success btn-sm"
                             th:attr="onclick='confirmApproval(' + ${claim.id} + ')'">
                         Approve
                     </button>
-                    <button th:if="${claim.status == 'Pending approval'}"
+                    <button th:if="${claim.status == 'Pending_Approval' && role == 'PM'}"
                             type="button"
                             class="btn btn-danger btn-sm"
                             th:attr="onclick='confirmRejection(' + ${claim.id} + ')'">
                         Reject
                     </button>
-                    <button th:if="${claim.status == 'Approved'} && ${role == 'QA'}">
+                    <button th:if="${claim.status == 'Approved' && role == 'QA'}">
                             type="button"
                             class="btn btn-info btn-sm"
                             th:attr="onclick='confirmPaid(' + ${claim.id} + ')'">
