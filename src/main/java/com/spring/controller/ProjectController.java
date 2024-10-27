@@ -183,8 +183,7 @@ public class ProjectController {
             System.out.println(detail);
 
         }
-
-//
+        attributes.addFlashAttribute("message", "Project created successfully");
         return "redirect:/project/list";
     }
 
