@@ -25,10 +25,6 @@ public class Claims {
     @Enumerated(EnumType.STRING)
     private Status status;
 
-    @Temporal(TemporalType.DATE)
-    @CreationTimestamp
-    private LocalDate date;
-
     @ManyToOne
     @JoinColumn(name = "staff_id")
     private Staff staff;

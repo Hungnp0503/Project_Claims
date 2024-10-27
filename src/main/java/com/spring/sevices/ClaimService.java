@@ -62,7 +62,7 @@ public class ClaimService {
         ByteArrayOutputStream out = new ByteArrayOutputStream();
         try (CSVPrinter printer = new CSVPrinter(new OutputStreamWriter(out), CSVFormat.DEFAULT.withHeader("ID", "Requester", "Status", "Date"))) {
             for (Claims claim : claims) {
-                printer.printRecord(claim.getId(), claim.getStatus(), claim.getDate());
+                printer.printRecord(claim.getId(), claim.getStatus());
             }
         }
         return new ByteArrayInputStream(out.toByteArray());
