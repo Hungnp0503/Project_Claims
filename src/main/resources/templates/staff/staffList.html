@@ -53,14 +53,12 @@
                 <td th:text="${staff.jobRank}"></td>
                 <td th:text="${staff.department}"></td>
                 <td>
-                    <div class="btn-group" role="group">
-                        <a th:href="@{/staff/edit(id=${staff.staffId})}" class="btn btn-primary btn-sm" title="Edit">
-                            <i class="fas fa-pen"></i>
-                        </a>
-                        <a th:href="@{/staff/delete(id=${staff.staffId})}" class="btn btn-danger btn-sm" title="Delete">
-                            <i class="fas fa-trash"></i>
-                        </a>
-                    </div>
+                    <a th:href="@{/staff/edit(id=${staff.staffId})}" class="btn btn-primary btn-sm" title="Edit">
+                        <i class="fa-solid fa-pen-to-square"></i>
+                    </a>
+                    <a th:href="@{/staff/delete(id=${staff.staffId})}" class="btn btn-danger btn-sm" title="Delete">
+                        <i class="fa-solid fa-trash-can"></i>
+                    </a>
                 </td>
             </tr>
             </tbody>
