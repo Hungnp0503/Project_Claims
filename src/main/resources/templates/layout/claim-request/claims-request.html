@@ -15,7 +15,7 @@
 <main class="container mt-4">
         <h2>Claims Requests</h2>
         <button type="button" class="btn btn-primary mb-3" onclick="confirmDownload()">Download Selected Claims</button>
-        <button type="button" class="btn btn-success mb-3" onclick="confirmMultiplePaid()">Mark Selected as Paid</button>
+        <button th:if="${ role == 'QA' || role == 'ADMIN'}" type="button" class="btn btn-success mb-3" onclick="confirmMultiplePaid()">Mark Selected as Paid</button>
         <table class="table table-bordered">
             <thead>
             <tr>
